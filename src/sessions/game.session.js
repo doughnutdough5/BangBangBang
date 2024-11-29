@@ -16,7 +16,12 @@ export const removeGameSession = (gameId) => {
     return null;
   }
 
-  return gameSession.splice(index, 1)[0];
+  const game = gameSession.splice(index, 1)[0];
+  if (game) {
+    game.release();
+  }
+
+  return game;
 };
 
 export const findGameById = (gameId) => {
