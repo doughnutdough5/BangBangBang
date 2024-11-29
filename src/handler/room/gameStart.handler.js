@@ -1,4 +1,3 @@
-import { intervalManager } from '../../classes/manager/interval.manager.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { characterPositions } from '../../init/loadPositions.js';
 import { Packets } from '../../init/loadProtos.js';
@@ -66,7 +65,7 @@ export const gameStartHandler = (socket, payload) => {
   console.log('마스크군 존재 여부:', isMask);
   if (isMask) {
     console.log('마스크군 존재');
-    intervalManager.addDeathPlayer(currentGame); //마스크군이 존재할 때
+    currentGame.intervalManager.addDeathPlayer(currentGame); //마스크군이 존재할 때
   }
   // 핑크 체크
   const isPink = currentGame.users.find(
@@ -74,7 +73,7 @@ export const gameStartHandler = (socket, payload) => {
   );
   if (isPink) {
     console.log('핑크군 존재');
-    intervalManager.addHandCardCheck(currentGame);
+    currentGame.intervalManager.addHandCardCheck(currentGame);
   }
 
   // 페이즈 시작
