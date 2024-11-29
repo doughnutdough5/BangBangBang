@@ -5,7 +5,6 @@ import { findGameById } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import {
     getStateNormal,
-    getStatefleaMarketWait,
     getStatefleaMarketTurnEnd,
     getStatefleaMarketTurnOver,
   } from '../../constants/stateType.js';
@@ -15,9 +14,15 @@ import userUpdateNotification from '../../utils/notification/userUpdate.notifica
 export const fleaMarketPickHandler = (socket, payload) => {
   const gainCardUser = getUserBySocket(socket);
   const currentGame = findGameById(gainCardUser.roomId);
+  console.log(currentGame.users);
+  // const fleaMarketTurn = currentGame.fleaMarketTurn
   const fleaMarketDeck = currentGame.fleaMarketDeck;
-  const fleaMarketUsers = currentGame.fleaMarketUsers;
+  const fleaMarketUsers = currentGame.users
   const pickIndex = payload.fleaMarketPickRequest.pickIndex;
+
+  console.log();
+  console.log(`${fleaMarketUsers[currentGame.fleaMarketTurn].nickname}의 턴`)
+  console.log(`현재 gainCardUser: ${gainCardUser.nickname}`)
 
   const alreadyPicked = currentGame.fleaMarketPickIndex.findIndex((pick) => pick === pickIndex);
   if (alreadyPicked !== -1) {
@@ -31,7 +36,7 @@ export const fleaMarketPickHandler = (socket, payload) => {
 
     socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse))
     return;
-  }
+  };
 
   currentGame.fleaMarketPickIndex.push(pickIndex); // push된 이후에 해당 배열의 length를 반환
   currentGame.fleaMarketTurn++;
@@ -44,27 +49,24 @@ export const fleaMarketPickHandler = (socket, payload) => {
   if (currentGame.fleaMarketTurn === fleaMarketUsers.length) {
     console.log('마지막 유저 선택')
     // 마지막 선택 이전에 normal --> 마지막 선택 이후에
-    currentGame.users.forEach((user) => {
+    fleaMarketUsers.forEach((user) => {
       user.setCharacterState(getStateNormal());
     });
 
-    fleaMarketNotification(fleaMarketDeck, currentGame.fleaMarketPickIndex, fleaMarketUsers);
-    userUpdateNotification(fleaMarketUsers);
-    // userUpdateNotification(currentGame.users)
     // 플리마켓 노티피케이션보다 위에 있으면 캐릭터 상태 동기화 순서가 먼저 이루어져서 플리마켓 창이 안 닫힘
     // 인게임 유저 풀에서 각 유저 간의 상태 정상화, 위치 동기화를 다시 해줘야 할 거 같다고 추측 중..
-    console.log('플리마켓 종료');
-    
-    console.log('플리마켓 뽑힌 카드 수: ' + currentGame.fleaMarketPickIndex.length);
-    console.log('플리마켓 카드 덱 수: ' + fleaMarketDeck);
   } else {
     fleaMarketUsers[currentGame.fleaMarketTurn].setCharacterState(getStatefleaMarketTurnEnd()); // 플리마켓 대기 배열에 남아있는 첫번째 유저 상태 변경
     console.log('다음 플리마켓 턴 유저: ' + fleaMarketUsers[currentGame.fleaMarketTurn].nickname);
-    
-    // userUpdateNotification(fleaMarketUsers)
-    fleaMarketNotification(fleaMarketDeck, currentGame.fleaMarketPickIndex, fleaMarketUsers);
-    userUpdateNotification(fleaMarketUsers)
   };
+
+  fleaMarketNotification(fleaMarketDeck, currentGame.fleaMarketPickIndex, fleaMarketUsers);
+  userUpdateNotification(fleaMarketUsers);
+
+  console.log(`[${currentGame.fleaMarketTurn}번째 턴] 플리마켓 유저들 상태 변경 후:`)
+  fleaMarketUsers.forEach((user) => {
+    console.log(`[${user.nickname}]의 상태: ${user.getCharacterState()}`)
+  })
 
   const responsePayload = {
     fleaMarketPickResponse: {

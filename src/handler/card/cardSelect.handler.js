@@ -16,28 +16,36 @@ export const cardSelectHandler = (socket, payload) => {
     // 그 전에 흡수 또는 신기루를 "당한" 유저의 해당 위치에 있는 카드를 먼저 제거
     const cardSelectUser = getUserBySocket(socket);
     const currentGame = findGameById(cardSelectUser.roomId);
-    const targetUser = currentGame.findInGameUserByState(Packets.CharacterStateType.ABSORB_TARGET);
+    const targetUser = currentGame.findInGameUserById(cardSelectUser.characterData.stateInfo.stateTargetUserId);
+    const usedCardType = cardSelectUser.getCharacterState() === Packets.CharacterStateType.ABSORBING ? Packets.CardType.ABSORB : Packets.CardType.HALLUCINATION; // 현재 상태에 따라 어떤 카드인지
+
     console.log("타켓 유저 불러오기 성공: " + targetUser.id);
     console.log(payload.cardSelectRequest.selectType);
     const selectType = payload.cardSelectRequest.selectType;
-    const absorbedCard = payload.cardSelectRequest.selectCardType;
+    let absorbedCard = payload.cardSelectRequest.selectCardType;
 
     console.log('흡수 대상 유저의 흡수 전 장착된 무기 상태: ' + targetUser.characterData.weapon);
+    // 신기루, 흡수 공통로직
     if (selectType === Packets.SelectCardType.WEAPON) {
         targetUser.unequipWepon(); // <-- 클라에서는 장착된 상태로 표시됨(기능도 작동됨)
-        cardSelectUser.addHandCard(absorbedCard);
     } else if (selectType === Packets.SelectCardType.EQUIP) {
         targetUser.removeEquipCard(absorbedCard);
-        cardSelectUser.addHandCard(absorbedCard);
     } else if (selectType === Packets.SelectCardType.DEBUFF) {
         targetUser.removeDebuffCard(absorbedCard);
-        cardSelectUser.addHandCard(absorbedCard);
+        // 상태도 바꿔줘야 하나?
     } else {
         const randomHandCard = targetUser.selectRandomHandCard();
         console.log(randomHandCard);
         targetUser.removeHandCard(randomHandCard);
-        cardSelectUser.addHandCard(randomHandCard);
+        absorbedCard = randomHandCard;
     };
+
+    console.log(`카드 사용 유저: ${cardSelectUser.nickname}의 상태는 ${cardSelectUser.getCharacterState()}`)
+    console.log(`카드 타겟 유저: ${targetUser.nickname}의 상태는 ${targetUser.getCharacterState()}`)
+
+    if (usedCardType === Packets.CardType.ABSORB) {
+        cardSelectUser.addHandCard(absorbedCard);
+    }
 
     cardSelectUser.setCharacterState(getStateNormal());
     targetUser.setCharacterState(getStateNormal());

@@ -187,12 +187,8 @@ class User {
     this.characterData.weapon = weapon;
   }
 
-  setCharacterPrevState(characterStateType) {
-    this.characterData.stateInfo.prevState = characterStateType;
-  }
-
-  getCharacterPrevState() {
-    return this.characterData.stateInfo.prevState;
+  getCharacterState() {
+    return this.characterData.stateInfo.state;
   }
 
   setCharacterStateType(characterStateType) {
@@ -216,13 +212,6 @@ class User {
       return;
     }
     this.characterData.equips.push(equip);
-  }
-
-  removeEquip(equip) {
-    const index = this.characterData.equips.findIndex((element) => element === equip);
-    if (index !== -1) {
-      this.characterData.equips.splice(index, 1);
-    }
   }
 
   addDebuff(debuff) {
@@ -268,35 +257,18 @@ class User {
     }
   }
 
-  removeEquipCard(usingCard) {
-    console.log(`${usingCard} 삭제`)
-    const index = this.characterData.equips.findIndex((card) => card.type === usingCard);
+  removeEquipCard(equip) {
+    const index = this.characterData.equips.findIndex((card) => card.type === equip);
 
-    // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
-    // 존재하지 않으면 addHandCard({ type: newType, count: 1})
-    // count-- => count === 0 객체를 아예 삭제
     if (index !== -1) {
-      const cnt = this.characterData.equips[index].count--;
-      if (cnt === 0) {
-        // 남은 카드 없음
-        this.characterData.equips.splice(index, 1);
-      }
+      this.characterData.equips.splice(index, 1);
     }
   }
 
-  removeDebuffCard(usingCard) {
-    console.log(`${usingCard} 삭제`)
-    const index = this.characterData.debuffs.findIndex((card) => card.type === usingCard);
-
-    // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
-    // 존재하지 않으면 addHandCard({ type: newType, count: 1})
-    // count-- => count === 0 객체를 아예 삭제
+  removeDebuffCard(debuff) {
+    const index = this.characterData.debuffs.findIndex((element) => element === debuff);
     if (index !== -1) {
-      const cnt = this.characterData.debuffs[index].count--;
-      if (cnt === 0) {
-        // 남은 카드 없음
-        this.characterData.debuffs.splice(index, 1);
-      }
+      this.characterData.equips.splice(index, 1);
     }
   }
 

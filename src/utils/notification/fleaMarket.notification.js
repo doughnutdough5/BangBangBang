@@ -3,7 +3,6 @@ import { createResponse } from '../response/createResponse.js';
 
 export const fleaMarketNotification = (cardTypes, pickIndex, currentGameUsers) => {
   console.log('fleaMarketNotification 호출됨')
-  console.log(pickIndex)
   const responsePayload = {
     fleaMarketNotification: {
       cardTypes: cardTypes,
@@ -12,7 +11,6 @@ export const fleaMarketNotification = (cardTypes, pickIndex, currentGameUsers) =
   };
 
   currentGameUsers.forEach((user) => {
-    console.log(`[${user.nickname}]: 플리마켓 노티 보내는 중`)
     user.socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, 0, responsePayload))
   });
   // 일단 노티 -> 선택 리퀘 날라오면 해당 유저 빼고 다음유저 상태 변경(getFleaMarketTurnEnd) -> 반복
