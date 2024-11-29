@@ -112,9 +112,16 @@ const autoShieldCheck = (targetUser, currentGame) => {
   const isAutoSheildUser = targetUser.characterData.equips.find((equipment) => {
     if (equipment === Packets.CardType.AUTO_SHIELD) return true;
   });
-
-  if (isAutoSheildUser || targetUser.characterData.characterType === Packets.CharacterType.FROGGY) {
+  if (isAutoSheildUser) {
     //오토 쉴드 장비
+    const autoSheild = Math.random();
+    if (autoSheild < 0.99) {
+      animationNotification(currentGame.users, targetUser, Packets.AnimationType.SHIELD_ANIMATION);
+      return true;
+    }
+  }
+  if (targetUser.characterData.characterType === Packets.CharacterType.FROGGY) {
+    //개굴군
     const autoSheild = Math.random();
     if (autoSheild < 0.99) {
       animationNotification(currentGame.users, targetUser, Packets.AnimationType.SHIELD_ANIMATION);
