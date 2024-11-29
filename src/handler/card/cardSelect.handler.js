@@ -58,16 +58,14 @@ export const cardSelectHandler = (socket, payload) => {
 
     cardSelectUser.setCharacterState(getStateNormal());
     targetUser.setCharacterState(getStateNormal());
-    userUpdateNotification(currentGame.users)
-    console.log('흡수 대상 유저의 장착된 무기 상태: ' + targetUser.characterData.weapon);
-    // useCardNotification
+    userUpdateNotification(currentGame.users);
 
     const responsePayload = {
         cardSelectResponse: {
             success: true,
             failCode: Packets.GlobalFailCode.NONE_FAILCODE
         }
-    }
+    };
 
     socket.write(createResponse(PACKET_TYPE.CARD_SELECT_RESPONSE, 0, responsePayload))
 };
