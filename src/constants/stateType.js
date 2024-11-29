@@ -148,8 +148,8 @@ export const getStateHallucinating = (user) => {
 
 export const getStateHallucinationTarget = (user) => {
   return {
-    currentState: Packets.CharacterStateType.ABSORB_TARGET,
-    nextState: Packets.CharacterStateType.HALLUCINATION_TARGET,
+    currentState: Packets.CharacterStateType.HALLUCINATION_TARGET,
+    nextState: Packets.CharacterStateType.NONE_CHARACTER_STATE,
     nextStateAt: Date.now(),
     targetUserId: user,
   };
