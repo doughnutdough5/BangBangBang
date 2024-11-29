@@ -143,25 +143,23 @@ export const gamePrepareHandler = (socket, payload) => {
       // 너무 많이 넣으면 UI가 안뜸(카드가 다 안뜸)
       user.characterData.handCards = [
         { type: Packets.CardType.BBANG, count: 2 },
-        { type: Packets.CardType.ABSORB, count: 1 },
-        { type: Packets.CardType.HALLUCINATION, count: 1 },
+        { type: Packets.CardType.ABSORB, count: 2 },
+        { type: Packets.CardType.HALLUCINATION, count: 2 },
         // { type: Packets.CardType.SHIELD, count: 2 },
         { type: Packets.CardType.FLEA_MARKET, count: 1 },
         { type: Packets.CardType.AUTO_RIFLE, count: 1 },
         // { type: Packets.CardType.GUERRILLA, count: 1 },
         // { type: Packets.CardType.CALL_119, count: 1 },
         // { type: Packets.CardType.HAND_GUN, count: 1 },
-        // { type: Packets.CardType.DESERT_EAGLE, count: 1 },
-        // { type: Packets.CardType.AUTO_RIFLE, count: 1 },
+        { type: Packets.CardType.DESERT_EAGLE, count: 1 },
         // { type: Packets.CardType.LASER_POINTER, count: 1 },
-        // { type: Packets.CardType.RADER, count: 1 },
+        { type: Packets.CardType.RADAR, count: 1 },
         { type: Packets.CardType.AUTO_SHIELD, count: 1 },
-        // { type: Packets.CardType.STEALTH_SUIT, count: 1 },
         { type: Packets.CardType.CONTAINMENT_UNIT, count: 1 },
-        // { type: Packets.CardType.SATELLITE_TARGET, count: 1 },
-        { type: Packets.CardType.BOMB, count: 2 },
+        { type: Packets.CardType.SATELLITE_TARGET, count: 1 },
+        { type: Packets.CardType.BOMB, count: 1 },
       ];
-      user.characterData.handCardsCount = 8;
+      user.characterData.handCardsCount = 14;
       // console.log(user.id, '의 handCards:', user.characterData.handCards);
     });
 

@@ -23,6 +23,10 @@ class User {
     this.damage = 1;
   }
 
+  // getStateTargetUserId() {
+  //   return this.characterData.stateInfo.stateTargetUserId;
+  // }
+
   equipWepon(weapon) {
     switch (weapon) {
       case Packets.CardType.HAND_GUN:
@@ -258,7 +262,7 @@ class User {
   }
 
   removeEquipCard(equip) {
-    const index = this.characterData.equips.findIndex((card) => card.type === equip);
+    const index = this.characterData.equips.findIndex((card) => card === equip);
 
     if (index !== -1) {
       this.characterData.equips.splice(index, 1);
@@ -267,8 +271,9 @@ class User {
 
   removeDebuffCard(debuff) {
     const index = this.characterData.debuffs.findIndex((element) => element === debuff);
+    console.log('debuff 삭제:',this.characterData.debuffs[index])
     if (index !== -1) {
-      this.characterData.equips.splice(index, 1);
+      this.characterData.debuffs.splice(index, 1);
     }
   }
 
