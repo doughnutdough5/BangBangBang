@@ -1,5 +1,6 @@
 import { gameEndNotification } from '../../utils/notification/gameEnd.notification.js';
 import { deadCheck } from '../../utils/notification/deadCheck.notification.js';
+import { pinkCheck } from '../../utils/notification/pinkCheck.notification.js';
 
 class IntervalManager {
   constructor() {
@@ -29,8 +30,14 @@ class IntervalManager {
     this.addPlayer(playerId, callback, interval, 'updatePosition');
   }
 
-  addGameEndNotification(room, interval = 1000) {
-    const callback = () => gameEndNotification(room);
+  addGameEndNotification(room, interval = 3000) {
+    const callback = () => {
+      if (room.users.length === 0) {
+        this.removeInterval(room.id, 'game')
+      }
+      console.log("interval 확인:",this.intervals.get(room.id))
+      gameEndNotification(room)
+    };
     this.addGame(room.id, callback, interval);
   }
 
@@ -38,6 +45,12 @@ class IntervalManager {
     const callback = () => deadCheck(room);
     this.addGame(room.id, callback, interval);
   }
+
+  addHandCardCheck(room, interval = 1000) {
+    const callback = () => pinkCheck(room);
+    this.addGame(room.id, callback, interval)
+  }
+  
 
   removePlayer(playerId) {
     if (this.intervals.has(playerId)) {
@@ -55,6 +68,7 @@ class IntervalManager {
         userIntervals.delete(type);
       }
     }
+
   }
 
   clearAll() {
@@ -69,3 +83,4 @@ class IntervalManager {
 }
 
 export const intervalManager = new IntervalManager();
+Object.freeze(intervalManager);

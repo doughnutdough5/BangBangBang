@@ -68,6 +68,14 @@ export const gameStartHandler = (socket, payload) => {
     console.log('마스크군 존재');
     intervalManager.addDeathPlayer(currentGame); //마스크군이 존재할 때
   }
+  // 핑크 체크
+  const isPink = currentGame.users.find(
+    (user) => user.characterData.characterType === Packets.CharacterType.PINK,
+  );
+  if (isPink) {
+    console.log('핑크군 존재');
+    intervalManager.addHandCardCheck(currentGame);
+  }
 
   // 페이즈 시작
   currentGame.changePhase();
