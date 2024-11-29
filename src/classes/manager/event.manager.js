@@ -63,16 +63,18 @@ class EventManager {
     });
 
     this.eventEmitter.on('onChangePhase', (params) => {
-      const {currentGame} = params
+      const { currentGame } = params;
       const tmp = currentGame.currentPhase;
       currentGame.currentPhase = currentGame.nextPhase;
-      currentGame.nextPhase = tmp
+      currentGame.nextPhase = tmp;
       const responseNotification = phaseUpdateNotification(currentGame);
       currentGame.users.forEach((user) => {
-        user.socket.write(createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification))
+        user.socket.write(
+          createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification),
+        );
       });
 
-      userUpdateNotification(currentGame.users)
+      userUpdateNotification(currentGame.users);
       currentGame.changePhase();
     });
   }
@@ -80,6 +82,11 @@ class EventManager {
   // 이벤트 예약
   // interval 매니저의 그 형태임
   scheduleEvent(userId, eventName, timeout, params = {}) {
+    if (this.events.has(userId) && this.events.get(userId).has(eventName)) {
+      console.log(`[DEL] ${userId}: ${eventName}`);
+      this.cancelEvent(userId, eventName);
+    }
+
     if (!this.events.has(userId)) {
       this.events.set(userId, new Map());
     }
@@ -109,8 +116,8 @@ class EventManager {
   }
 
   clearAll() {
-    console.log('삭제 전 이벤트 매니저:')
-    console.dir(this.events, {depth:null})
+    console.log('삭제 전 이벤트 매니저:');
+    console.dir(this.events, { depth: null });
     this.events.forEach((e) => {
       e.forEach((id) => {
         clearTimeout(id);
@@ -118,10 +125,9 @@ class EventManager {
     });
 
     this.events.clear();
-    console.log('삭제 후 이벤트 매니저:')
-    console.dir(this.events, {depth:null})
+    console.log('삭제 후 이벤트 매니저:');
+    console.dir(this.events, { depth: null });
   }
-
 }
 
 export default EventManager;
