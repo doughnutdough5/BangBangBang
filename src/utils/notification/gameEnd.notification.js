@@ -3,7 +3,6 @@ import { Packets } from '../../init/loadProtos.js';
 import { createResponse } from '../response/createResponse.js';
 import { removeGameSession } from '../../sessions/game.session.js';
 import { roomManager } from '../../classes/manager/room.manager.js';
-import { intervalManager } from '../../classes/manager/interval.manager.js';
 
 export const gameEndNotification = (room) => {
   const survivor = [];
@@ -23,7 +22,7 @@ export const gameEndNotification = (room) => {
 
   if (!isTarget && !isBodyguard && !isHitman) {
     //싸이코패스 승리
-    console.log("싸이코패스 승리")
+    console.log('싸이코패스 승리');
     const winners = room.users.filter(
       (user) => user.characterData.roleType === Packets.RoleType.PSYCHOPATH,
     );
@@ -36,7 +35,7 @@ export const gameEndNotification = (room) => {
     };
   } else if (!isHitman && !isPsychopath) {
     //타겟 & 보디가드 승리
-    console.log("타겟 & 보디가드 승리")
+    console.log('타겟 & 보디가드 승리');
     const winners = room.users.filter(
       (user) =>
         user.characterData.roleType === Packets.RoleType.TARGET ||
@@ -51,7 +50,7 @@ export const gameEndNotification = (room) => {
     };
   } else if (!isTarget) {
     //히트맨 승리
-    console.log("히트맨 승리")
+    console.log('히트맨 승리');
     const winners = room.users.filter(
       (user) => user.characterData.roleType === Packets.RoleType.HITMAN,
     );
@@ -63,21 +62,18 @@ export const gameEndNotification = (room) => {
       },
     };
   }
-  console.log("인터벌 작동 - ",responsePayload)
+  console.log('인터벌 작동 - ', responsePayload);
   if (responsePayload) {
-    // room.events.clearAll();
-    room.events.cancelEvent(room.id, 'onChangePhase')
-    intervalManager.removeInterval(room.id, 'game');
-
     // intervalManager.clearAll();
     roomManager.deleteRoom(room.id);
     room.users.forEach((user) => {
       user.socket.write(createResponse(PACKET_TYPE.GAME_END_NOTIFICATION, 0, responsePayload));
     });
     //게임 종료 시 인터벌 제거, 세션 삭제
-    
+
+    // removeGameSession에서 인터벌과 이벤트를 비워주는 release 메서드 호출
     removeGameSession(room.id);
-    console.log("게임 세션 삭제")
+    console.log('게임 세션 삭제');
   }
 };
 
