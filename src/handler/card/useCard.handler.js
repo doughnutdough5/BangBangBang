@@ -25,6 +25,8 @@ export const useCardHandler = (socket, payload) => {
   const currentGame = findGameById(cardUsingUser.roomId);
   const targetUser = currentGame.findInGameUserById(targetUserId);
 
+  // TODO: 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
+
   const cardHandler = getCardHandlerByCardType(useCardType);
   if (!cardHandler) {
     console.error('카드 핸들러를 찾을 수 없습니다.');
