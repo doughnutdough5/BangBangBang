@@ -40,22 +40,23 @@ class Game {
     this.deck.push(cardType);
   }
 
-  // 1. 3분 낮 -> 2분 45초 낮 -> 갑자기 30초 밤(카드버리기 안뜸)
   changePhase() {
-    setTimeout(() => {
-      const tmp = this.currentPhase;
-      this.currentPhase = this.nextPhase;
-      this.nextPhase = tmp;
-      const responseNotification = phaseUpdateNotification(this);
-      this.users.forEach((user) => {
-        user.socket.write(
-          createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification),
-        );
-      });
-      // 카드 삭제 후 동기화
-      userUpdateNotification(this.users);
-      this.changePhase();
-    }, phaseTime[this.currentPhase]);
+    const time = phaseTime[this.currentPhase];
+    this.events.scheduleEvent(this.id, 'onChangePhase', time, {currentGame: this})
+    // setTimeout(() => {
+    //   const tmp = this.currentPhase;
+    //   this.currentPhase = this.nextPhase;
+    //   this.nextPhase = tmp;
+    //   const responseNotification = phaseUpdateNotification(this);
+    //   this.users.forEach((user) => {
+    //     user.socket.write(
+    //       createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification),
+    //     );
+    //   });
+    //   // 카드 삭제 후 동기화
+    //   userUpdateNotification(this.users);
+    //   this.changePhase();
+    // }, phaseTime[this.currentPhase]);
   }
 
   // removeEvent(cardUsingUserId) {
@@ -116,6 +117,7 @@ class Game {
   gameStart() {
     this.state = Packets.RoomStateType.PREPARE;
     intervalManager.addGameEndNotification(this);
+
   }
 }
 

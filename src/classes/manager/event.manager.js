@@ -1,4 +1,8 @@
 import EventEmitter from 'events';
+import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
+import { phaseUpdateNotification } from '../../utils/notification/phaseUpdate.notification.js';
+import { createResponse } from '../../utils/response/createResponse.js';
+import { PACKET_TYPE } from '../../constants/header.js';
 
 class EventManager {
   constructor() {
@@ -57,6 +61,20 @@ class EventManager {
       warningNoti();
       bombTimer();
     });
+
+    this.eventEmitter.on('onChangePhase', (params) => {
+      const {currentGame} = params
+      const tmp = currentGame.currentPhase;
+      currentGame.currentPhase = currentGame.nextPhase;
+      currentGame.nextPhase = tmp
+      const responseNotification = phaseUpdateNotification(currentGame);
+      currentGame.users.forEach((user) => {
+        user.socket.write(createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification))
+      });
+
+      userUpdateNotification(currentGame.users)
+      currentGame.changePhase();
+    });
   }
 
   // 이벤트 예약
@@ -89,6 +107,21 @@ class EventManager {
       console.log(`[NOT FOUND] ${userId}: ${eventName}을 찾을 수 없음`);
     }
   }
+
+  clearAll() {
+    console.log('삭제 전 이벤트 매니저:')
+    console.dir(this.events, {depth:null})
+    this.events.forEach((e) => {
+      e.forEach((id) => {
+        clearTimeout(id);
+      });
+    });
+
+    this.events.clear();
+    console.log('삭제 후 이벤트 매니저:')
+    console.dir(this.events, {depth:null})
+  }
+
 }
 
 export default EventManager;
