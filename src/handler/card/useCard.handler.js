@@ -58,9 +58,9 @@ export const useCardHandler = (socket, payload) => {
   currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
 
   // 카드를 사용하고 덱에서 삭제 되었을 때, 손에 남은 카드가 0이고 캐릭터가 핑크군이면 실행
-  if (cardUsingUser.characterData.handCardsCount === 0) {
-    characterTypeGetCard(cardUsingUser, currentGame);
-  }
+  // if (cardUsingUser.characterData.handCardsCount === 0) {
+  //   characterTypeGetCard(cardUsingUser, currentGame);
+  // }
   const useCardNotificationResponse = useCardNotification(
     useCardType,
     cardUsingUser.id,
@@ -88,10 +88,10 @@ export const useCardHandler = (socket, payload) => {
   socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, responsePayload));
 };
 
-//캐릭터 특성 - 핑크
-const characterTypeGetCard = (user, game) => {
-  if (user.characterData.characterType === Packets.CharacterType.PINK) {
-    const card = game.deck.shift();
-    user.addHandCard(card);
-  }
-};
+// //캐릭터 특성 - 핑크
+// const characterTypeGetCard = (user, game) => {
+//   if (user.characterData.characterType === Packets.CharacterType.PINK) {
+//     const card = game.deck.shift();
+//     user.addHandCard(card);
+//   }
+// };
