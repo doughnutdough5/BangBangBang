@@ -68,7 +68,8 @@ const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
 
   console.log('오토 쉴드 체크', autoSheildSuccess);
   if (autoSheildSuccess) {
-    //자동 방어 성공 시
+    //자동 방어 성공 시 : 자동쉴드 효과 알림
+    cardEffectNotification(currentGame, Packets.CardType.AUTO_SHIELD, cardUsingUser);
   } else {
     //자동 방어 실패 시
 
