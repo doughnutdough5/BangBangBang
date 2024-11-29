@@ -159,7 +159,7 @@ export const gamePrepareHandler = (socket, payload) => {
         // { type: Packets.CardType.STEALTH_SUIT, count: 1 },
         { type: Packets.CardType.CONTAINMENT_UNIT, count: 1 },
         // { type: Packets.CardType.SATELLITE_TARGET, count: 1 },
-        // { type: Packets.CardType.BOMB, count: 1 },
+        { type: Packets.CardType.BOMB, count: 2 },
       ];
       user.characterData.handCardsCount = 8;
       // console.log(user.id, '의 handCards:', user.characterData.handCards);

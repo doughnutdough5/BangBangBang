@@ -1,22 +1,29 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { Packets } from '../../init/loadProtos.js';
+import { findGameById } from '../../sessions/game.session.js';
 import { findUserById, getUserBySocket } from '../../sessions/user.session.js';
+import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
 import warningNotification from '../../utils/notification/warning.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
+import { bombCardHandler } from '../card/bombCard.handler.js';
 
 export const passDebuffHandler = (socket, payload) => {
   const passer = getUserBySocket(socket);
-  const debuffCard = payload.debuffCardType;
-  const debuffUser = findUserById(payload.targetUserId);
+  const debuffCard = payload.passDebuffRequest.debuffCardType;
+  const debuffUser = findUserById(payload.passDebuffRequest.targetUserId.low);
+  const currentGame = findGameById(passer.roomId);
+
+  currentGame.events.cancelEvent(passer.id, 'warningTimer');
+  // warningNotification(passer, Packets.WarningType.NO_WARNING, Date.now());
+  currentGame.events.cancelEvent(passer.id, 'bombTimer');
 
   passer.characterData.debuffs = passer.characterData.debuffs.filter(
     (debuff) => debuff !== debuffCard,
   );
-
-  debuffUser.characterData.debuffs.push(debuffCard);
-
-  warningNotification(debuffUser, Packets.WarningType.BOMB_WANING, Date.now() + 30000);
+  bombCardHandler(passer, debuffUser, currentGame, Packets.CardType.BOMB);
   warningNotification(passer, Packets.WarningType.NO_WARNING, Date.now());
+
+  userUpdateNotification(currentGame.users);
 
   const responsePayload = {
     passDebuffResponse: {
