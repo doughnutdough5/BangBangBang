@@ -4,71 +4,47 @@ import { pinkCheck } from '../../utils/notification/pinkCheck.notification.js';
 
 class IntervalManager {
   constructor() {
-    if (IntervalManager.instance) {
-      return IntervalManager.instance;
-    }
     this.intervals = new Map();
-    IntervalManager.instance = this;
   }
 
-  // 이름 바꿔서 type을 활용해서 위치 동기화나 게임관련이나 이런곳에 써도 됨
-  addPlayer(playerId, callback, interval, type = 'user') {
-    if (!this.intervals.has(playerId)) {
-      // 한 명의 유저가 여러개의 스케쥴을 관리할 수도 있음
-      this.intervals.set(playerId, new Map());
+  addInterval(id, callback, interval, eventName) {
+    if (!this.intervals.has(id)) {
+      this.intervals.set(id, new Map());
     }
 
-    this.intervals.get(playerId).set(type, setInterval(callback, interval));
+    this.intervals.get(id).set(eventName, setInterval(callback, interval));
   }
 
-  addGame(gameId, callback, interval) {
-    this.addPlayer(gameId, callback, interval, 'game');
-  }
-
-  // 따로 매니저로 빼도 됨
-  addUpdatePosition() {
-    this.addPlayer(playerId, callback, interval, 'updatePosition');
-  }
-
-  addGameEndNotification(room, interval = 3000) {
-    const callback = () => {
-      if (room.users.length === 0) {
-        this.removeInterval(room.id, 'game')
-      }
-      console.log("interval 확인:",this.intervals.get(room.id))
-      gameEndNotification(room)
-    };
-    this.addGame(room.id, callback, interval);
+  addGameEndNotification(room, interval = 3000, eventName = 'gameEnd') {
+    this.addInterval(
+      room.id,
+      () => {
+        if (!room) {
+          this.removeInterval(room.id, eventName);
+        }
+        gameEndNotification(room);
+      },
+      interval,
+    );
   }
 
   addDeathPlayer(room, interval = 1000) {
-    const callback = () => deadCheck(room);
-    this.addGame(room.id, callback, interval);
+    this.addInterval(room.id, () => deadCheck(room), interval, 'checkDeathPlayer');
   }
 
   addHandCardCheck(room, interval = 1000) {
-    const callback = () => pinkCheck(room);
-    this.addGame(room.id, callback, interval)
-  }
-  
-
-  removePlayer(playerId) {
-    if (this.intervals.has(playerId)) {
-      const userIntervals = this.intervals.get(playerId);
-      userIntervals.forEach((intervalId) => clearInterval(intervalId));
-      this.intervals.delete(playerId);
-    }
+    this.addInterval(room.id, () => pinkCheck(room), interval, 'pink');
   }
 
-  removeInterval(playerId, type) {
-    if (this.intervals.has(playerId)) {
-      const userIntervals = this.intervals.get(playerId);
-      if (userIntervals.has(type)) {
-        clearInterval(userIntervals.get(type));
-        userIntervals.delete(type);
-      }
+  removeInterval(id, eventName) {
+    const intervals = this.intervals.get(id);
+    if (intervals && intervals.has(eventName)) {
+      clearInterval(intervals.get(type));
+      intervals.delete(type);
+      console.log(`[CANCEL EVENT] ${id}: ${eventName} 취소됨.`);
+      return;
     }
-
+    console.log(`[NOT FOUND] ${id}: ${eventName}을 찾을 수 없음`);
   }
 
   clearAll() {
@@ -82,5 +58,4 @@ class IntervalManager {
   }
 }
 
-export const intervalManager = new IntervalManager();
-Object.freeze(intervalManager);
+export default IntervalManager;
