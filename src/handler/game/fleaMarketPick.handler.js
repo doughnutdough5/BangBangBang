@@ -24,6 +24,21 @@ export const fleaMarketPickHandler = (socket, payload) => {
   console.log(`${fleaMarketUsers[currentGame.fleaMarketTurn].nickname}의 턴`)
   console.log(`현재 gainCardUser: ${gainCardUser.nickname}`)
 
+  // 현재 턴인 사람과 request로 날아온 사람의 id가 다를 때 === 현재 
+  if (fleaMarketUsers[currentGame.fleaMarketTurn].id !== gainCardUser.id) {
+    consol
+    console.error('')
+    const errorResponse = {
+      fleaMarketPickResponse: {
+        success: false,
+        failCode: Packets.GlobalFailCode.INVALID_REQUEST
+      }
+    }
+
+    socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse))
+    return;
+  }
+
   const alreadyPicked = currentGame.fleaMarketPickIndex.findIndex((pick) => pick === pickIndex);
   if (alreadyPicked !== -1) {
     console.error('이미 선택된 카드')
