@@ -51,6 +51,12 @@ class EventManager {
       bombAni();
       userUpdateNotification(currentGameUsers);
     });
+
+    this.eventEmitter.on('warningTimer', (params) => {
+      const { warningNoti, bombTimer } = params;
+      warningNoti();
+      bombTimer();
+    });
   }
 
   // 이벤트 예약

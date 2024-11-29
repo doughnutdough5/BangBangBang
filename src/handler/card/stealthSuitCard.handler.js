@@ -3,5 +3,4 @@ import equipCardNotification from '../../utils/notification/equipCard.notificati
 export const stealthSuitHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   cardUsingUser.addEquip(useCardType);
   equipCardNotification(useCardType, cardUsingUser.id);
-  // cardEffectNotification(currentGame, useCardType, cardUsingUser);
 };
