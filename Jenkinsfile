@@ -2,9 +2,10 @@ node {
 	stage ('clone') {
 		git branch: 'main', url: 'https://github.com/doughnutdough5/bangbangbang.git'
 	}
-    stage ('execute') {
-        sh 'pwd'
-        sh 'chmod +x ./run'
-        sh './run'
-	}
+    dir ('bangbangbang') {
+        stage ('bangbangbang/execute') {
+            sh 'chmod +x ./run'
+            sh './run'
+        }
+    }
 }
