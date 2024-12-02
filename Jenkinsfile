@@ -6,7 +6,7 @@ node {
         stage ('execute') {
             sh 'sudo npm install'
             sh 'sudo chmod +x ../run'
-            sh '../run'
+            sh 'cd .. && ./run'
         }
     }
 }
