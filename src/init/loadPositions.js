@@ -1,24 +1,12 @@
-import { readFileSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { loadLocations } from '../db/game/game.db.js';
 
 export let characterPositions = null;
 
-export const loadCharacterPositions = () => {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    const positionsPath = path.resolve(__dirname, '../assets/characterPositionData.json');
+export const loadCharacterPositionsFromDB = async () => {
+  const positions = await loadLocations();
+  characterPositions = positions.map((pos) => {
+    return { id: pos.id, x: pos.x, y: pos.y };
+  });
 
-    try {
-        const data = readFileSync(positionsPath, 'utf-8');
-        const parsedData = JSON.parse(data);
-        characterPositions = parsedData.position;
-
-        if (characterPositions) {
-            console.log('characterPositionData.json 로드 성공');
-        }
-    } catch (err) {
-        console.error(err);
-        process.exit(1);
-    }
-}
+  console.dir(characterPositions);
+};
