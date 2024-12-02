@@ -87,12 +87,20 @@ class EventManager {
       this.cancelEvent(userId, eventName);
     }
 
+    if (!this.eventEmitter) {
+      return;
+    }
+
     if (!this.events.has(userId)) {
       this.events.set(userId, new Map());
     }
 
     const userEvent = this.events.get(userId);
     const eventId = setTimeout(() => {
+      if (!this.eventEmitter) {
+        return;
+      }
+
       // data를 넘겨받을 필요가 있으면 추가하기
       this.eventEmitter.emit(eventName, params);
       userEvent.delete(eventName);
