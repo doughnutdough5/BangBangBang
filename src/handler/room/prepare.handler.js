@@ -41,14 +41,6 @@ export const gamePrepareHandler = (socket, payload) => {
     currentGame.gameStart();
     console.log('현재 게임 정보:', currentGame);
 
-    /* TODO:
-            *  1. 캐릭터 셔플(CharacterType) - 완료
-            *  2. 덱 셔플 후 카드 배분 - 캐릭터 HP만큼(user.hp) user.addHandCards(card)
-                    - Packets.CardType
-            *  3. 역할 배분(RoleType) - 완료
-            *  4. CharacterType에 맞게 hp 설정 - 완료
-            */
-
     const inGameUsers = currentGame.users;
 
     // 캐릭터 셔플
@@ -132,34 +124,33 @@ export const gamePrepareHandler = (socket, payload) => {
       for (let i = 0; i < user.characterData.hp; i++) {
         const card = deck.shift();
         tmp.push(card);
-        // user.addHandCard(card); // card === type
+        user.addHandCard(card); // card === type
         // { type: card, count: 1}
-        // user.increaseHandCardsCount();  // 원본 살려야 하는 코드
+        user.increaseHandCardsCount(); // 원본 살려야 하는 코드
       }
       // 2. 한 번에 추가
       const result = transformData(tmp);
-      // user.characterData.handCards = result;
+      user.characterData.handCards = result;
       // WARN: Test code
-      // 너무 많이 넣으면 UI가 안뜸(카드가 다 안뜸)
-      user.characterData.handCards = [
-        { type: Packets.CardType.BBANG, count: 2 },
-        { type: Packets.CardType.ABSORB, count: 2 },
-        { type: Packets.CardType.HALLUCINATION, count: 2 },
-        // { type: Packets.CardType.SHIELD, count: 2 },
-        { type: Packets.CardType.FLEA_MARKET, count: 1 },
-        { type: Packets.CardType.AUTO_RIFLE, count: 1 },
-        // { type: Packets.CardType.GUERRILLA, count: 1 },
-        // { type: Packets.CardType.CALL_119, count: 1 },
-        // { type: Packets.CardType.HAND_GUN, count: 1 },
-        { type: Packets.CardType.DESERT_EAGLE, count: 1 },
-        // { type: Packets.CardType.LASER_POINTER, count: 1 },
-        { type: Packets.CardType.RADAR, count: 1 },
-        { type: Packets.CardType.AUTO_SHIELD, count: 1 },
-        { type: Packets.CardType.CONTAINMENT_UNIT, count: 1 },
-        { type: Packets.CardType.SATELLITE_TARGET, count: 1 },
-        { type: Packets.CardType.BOMB, count: 1 },
-      ];
-      user.characterData.handCardsCount = 14;
+      // user.characterData.handCards = [
+      // { type: Packets.CardType.BIG_BBANG, count: 2 },
+      //   { type: Packets.CardType.ABSORB, count: 2 },
+      // { type: Packets.CardType.HALLUCINATION, count: 2 },
+      // { type: Packets.CardType.SHIELD, count: 2 },
+      //   { type: Packets.CardType.FLEA_MARKET, count: 1 },
+      //   { type: Packets.CardType.AUTO_RIFLE, count: 1 },
+      //   { type: Packets.CardType.GUERRILLA, count: 1 },
+      //   { type: Packets.CardType.CALL_119, count: 1 },
+      //   { type: Packets.CardType.HAND_GUN, count: 1 },
+      //   { type: Packets.CardType.DESERT_EAGLE, count: 1 },
+      //   { type: Packets.CardType.LASER_POINTER, count: 1 },
+      //   { type: Packets.CardType.RADAR, count: 1 },
+      //   { type: Packets.CardType.AUTO_SHIELD, count: 1 },
+      //   { type: Packets.CardType.CONTAINMENT_UNIT, count: 1 },
+      //   { type: Packets.CardType.SATELLITE_TARGET, count: 1 },
+      //   { type: Packets.CardType.BOMB, count: 1 },
+      // ];
+      // user.characterData.handCardsCount = 4;
       // console.log(user.id, '의 handCards:', user.characterData.handCards);
     });
 
