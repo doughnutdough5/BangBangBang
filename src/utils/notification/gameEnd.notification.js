@@ -75,7 +75,6 @@ export const gameEndNotification = async (room) => {
       await saveRecord(loser.id, false, loser.characterData.roleType);
     });
 
-    // intervalManager.clearAll();
     roomManager.deleteRoom(room.id);
     room.users.forEach((user) => {
       user.socket.write(createResponse(PACKET_TYPE.GAME_END_NOTIFICATION, 0, responsePayload));
