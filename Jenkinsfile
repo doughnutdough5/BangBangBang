@@ -5,7 +5,7 @@ node {
     dir ('bangbangbang') {
         stage ('execute') {
             sh 'sudo npm install'
-            sh 'sudo chmod +x ./run'
+            sh 'sudo chmod +x ../run'
             sh '../run'
         }
     }
