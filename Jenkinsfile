@@ -1,8 +1,8 @@
 node {
 	stage ('clone') {
-		git 'https://github.com/doughnutdough5/bangbangbang.git'
+		git branch: 'main', url: 'https://github.com/doughnutdough5/bangbangbang.git'
 	}
-	dir ('${env.HOME}') {
+	dir ('${env.WORKSPACE}') {
 		stage ('execute') {
 			sh './project'
 		}
