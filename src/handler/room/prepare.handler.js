@@ -126,7 +126,6 @@ export const gamePrepareHandler = (socket, payload) => {
         tmp.push(card);
         user.addHandCard(card); // card === type
         // { type: card, count: 1}
-        user.increaseHandCardsCount(); // 원본 살려야 하는 코드
       }
       // 2. 한 번에 추가
       const result = transformData(tmp);
