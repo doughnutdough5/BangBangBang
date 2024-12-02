@@ -60,11 +60,14 @@ const characterTypeGetCard = (user, targetUser, game, lostHp) => {
   }
 
   if (user.characterData.characterType === Packets.CharacterType.PINK_SLIME) {
-    const card =
-      targetUser.characterData.handCards[
-        Math.floor(Math.random() * targetUser.characterData.handCardsCount)
-      ];
-    targetUser.removeHandCard(card.type);
-    user.addHandCard(card.type);
+    if (targetUser.characterData.handCardsCount !== 0) {
+      const card =
+        targetUser.characterData.handCards[
+          Math.floor(Math.random() * targetUser.characterData.handCardsCount)
+        ];
+
+      targetUser.removeHandCard(card.type);
+      user.addHandCard(card.type);
+    }
   }
 };
