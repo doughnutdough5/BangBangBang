@@ -252,8 +252,10 @@ class User {
     // 존재하지 않으면 addHandCard({ type: newType, count: 1})
     // count-- => count === 0 객체를 아예 삭제
     if (index !== -1) {
-      const cnt = this.characterData.handCards[index].count--;
+      const cnt = --this.characterData.handCards[index].count;
+      // --this.characterDataHandCards[index].count;
       this.decreaseHandCardsCount(); // removeHandCard에서 카드 카운트를 한 번 더해버려 손패 개수가 카드 한 장 사용할 때마다 2장씩 빠짐
+      // if (this.characterDataHandCards[index].count === 0)
       if (cnt === 0) {
         // 남은 카드 없음
         this.characterData.handCards.splice(index, 1);
@@ -271,7 +273,7 @@ class User {
 
   removeDebuffCard(debuff) {
     const index = this.characterData.debuffs.findIndex((element) => element === debuff);
-    console.log('debuff 삭제:',this.characterData.debuffs[index])
+    console.log('debuff 삭제:', this.characterData.debuffs[index]);
     if (index !== -1) {
       this.characterData.debuffs.splice(index, 1);
     }
