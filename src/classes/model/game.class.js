@@ -41,6 +41,8 @@ class Game {
     this.intervalManager.clearAll();
     this.events.clearAll();
     this.intervalManager = null;
+    this.events.eventEmitter = null;
+    this.events = null;
   }
 
   returnCardToDeck(cardType) {
