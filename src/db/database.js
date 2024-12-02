@@ -35,38 +35,4 @@ const pools = {
   GAME_DB: createPool(database.GAME_DB),
 };
 
-const getConnection = async () => {
-  try {
-    const conn = await pools.USER_DB.getConnection();
-    return conn;
-  } catch (err) {
-    if (conn) {
-      conn.rollback();
-    }
-
-    console.error(err);
-    return null;
-  } finally {
-    if (conn) {
-      await conn.release();
-    }
-  }
-};
-
-const transaction = async (queries) => {
-  let conn = null;
-  try {
-    conn = await getConnection();
-    await conn.beginTransaction();
-
-    const result = await queries();
-
-    await conn.commit();
-    return result;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-};
-
 export default pools;
