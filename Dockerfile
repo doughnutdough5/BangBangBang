@@ -10,9 +10,13 @@ RUN apt-get update && \
     ca-certificates
 
 # Node.js 설치 (NodeSource에서 최신 LTS 버전 설치)
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash && \
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash && \
     apt-get install -y nodejs
 
+# 20.x 떠야함
+RUN node -v
+# 10.x 떠야함
+RUN npm -v
 # pm2 설치 
 RUN npm install -g pm2
 
