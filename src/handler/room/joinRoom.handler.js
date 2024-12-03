@@ -78,9 +78,6 @@ export const joinRoomHandler = (socket, payload) => {
 };
 
 export const joinRandomRoomHandler = (socket, payload) => {
-  // const {roomId} = payload.joinRandomRoomRequest;
-  // console.log("roomId:",roomId)
-
   const joinUser = getUserBySocket(socket);
   if (!joinUser) {
     const errorMessage = '유저를 찾을 수 없습니다.';
