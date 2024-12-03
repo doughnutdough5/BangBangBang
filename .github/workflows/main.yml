@@ -38,3 +38,4 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bangbangbang
             sudo docker run --env-file ${{ secrets.ENV_PATH }} ${{ secrets.DOCKER_USERNAME }}/bangbangbang
             sudo docker image prune -f
+            sudo docker container prune -f
