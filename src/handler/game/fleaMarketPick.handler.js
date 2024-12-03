@@ -4,12 +4,12 @@ import { Packets } from '../../init/loadProtos.js';
 import { findGameById } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import {
-    getStateNormal,
-    getStatefleaMarketTurnEnd,
-    getStatefleaMarketTurnOver,
-  } from '../../constants/stateType.js';
+  getStateNormal,
+  getStatefleaMarketTurnEnd,
+  getStatefleaMarketTurnOver,
+} from '../../constants/stateType.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js'
+import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
 
 export const fleaMarketPickHandler = (socket, payload) => {
   const gainCardUser = getUserBySocket(socket);
@@ -17,52 +17,51 @@ export const fleaMarketPickHandler = (socket, payload) => {
   console.log(currentGame.users);
   // const fleaMarketTurn = currentGame.fleaMarketTurn
   const fleaMarketDeck = currentGame.fleaMarketDeck;
-  const fleaMarketUsers = currentGame.users
+  const fleaMarketUsers = currentGame.users;
   const pickIndex = payload.fleaMarketPickRequest.pickIndex;
 
   console.log();
-  console.log(`${fleaMarketUsers[currentGame.fleaMarketTurn].nickname}의 턴`)
-  console.log(`현재 gainCardUser: ${gainCardUser.nickname}`)
+  console.log(`${fleaMarketUsers[currentGame.fleaMarketTurn].nickname}의 턴`);
+  console.log(`현재 gainCardUser: ${gainCardUser.nickname}`);
 
-  // 현재 턴인 사람과 request로 날아온 사람의 id가 다를 때 === 현재 
+  // 현재 턴인 사람과 request로 날아온 사람의 id가 다를 때 === 현재
   if (fleaMarketUsers[currentGame.fleaMarketTurn].id !== gainCardUser.id) {
-    consol
-    console.error('')
+    console.error('');
     const errorResponse = {
       fleaMarketPickResponse: {
         success: false,
-        failCode: Packets.GlobalFailCode.INVALID_REQUEST
-      }
-    }
+        failCode: Packets.GlobalFailCode.INVALID_REQUEST,
+      },
+    };
 
-    socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse))
+    socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse));
     return;
   }
 
   const alreadyPicked = currentGame.fleaMarketPickIndex.findIndex((pick) => pick === pickIndex);
   if (alreadyPicked !== -1) {
-    console.error('이미 선택된 카드')
+    console.error('이미 선택된 카드');
     const errorResponse = {
       fleaMarketPickResponse: {
         success: false,
-        failCode: Packets.GlobalFailCode.INVALID_REQUEST
-      }
-    }
+        failCode: Packets.GlobalFailCode.INVALID_REQUEST,
+      },
+    };
 
-    socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse))
+    socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, 0, errorResponse));
     return;
-  };
+  }
 
   currentGame.fleaMarketPickIndex.push(pickIndex); // push된 이후에 해당 배열의 length를 반환
   currentGame.fleaMarketTurn++;
-    // 왼쪽 카드의 순서는 0부터 시작
+  // 왼쪽 카드의 순서는 0부터 시작
   gainCardUser.addHandCard(fleaMarketDeck[pickIndex]);
-  
+
   gainCardUser.setCharacterState(getStatefleaMarketTurnOver()); // 플리마켓 카드 선택한 유저 상태 정상화
   console.log('카드 선택한 유저: ' + gainCardUser.nickname);
 
   if (currentGame.fleaMarketTurn === fleaMarketUsers.length) {
-    console.log('마지막 유저 선택')
+    console.log('마지막 유저 선택');
     // 마지막 선택 이전에 normal --> 마지막 선택 이후에
     fleaMarketUsers.forEach((user) => {
       user.setCharacterState(getStateNormal());
@@ -73,15 +72,15 @@ export const fleaMarketPickHandler = (socket, payload) => {
   } else {
     fleaMarketUsers[currentGame.fleaMarketTurn].setCharacterState(getStatefleaMarketTurnEnd()); // 플리마켓 대기 배열에 남아있는 첫번째 유저 상태 변경
     console.log('다음 플리마켓 턴 유저: ' + fleaMarketUsers[currentGame.fleaMarketTurn].nickname);
-  };
+  }
 
   fleaMarketNotification(fleaMarketDeck, currentGame.fleaMarketPickIndex, fleaMarketUsers);
   userUpdateNotification(fleaMarketUsers);
 
-  console.log(`[${currentGame.fleaMarketTurn}번째 턴] 플리마켓 유저들 상태 변경 후:`)
+  console.log(`[${currentGame.fleaMarketTurn}번째 턴] 플리마켓 유저들 상태 변경 후:`);
   fleaMarketUsers.forEach((user) => {
-    console.log(`[${user.nickname}]의 상태: ${user.getCharacterState()}`)
-  })
+    console.log(`[${user.nickname}]의 상태: ${user.getCharacterState()}`);
+  });
 
   const responsePayload = {
     fleaMarketPickResponse: {
