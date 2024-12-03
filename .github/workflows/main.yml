@@ -35,8 +35,6 @@ jobs:
           envs: GITHUB_SHA
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bangbangbang
-            sudo docker run -t --env-file ${{ secrets.ENV_PATH }} ${{ secrets.DOCKER_USERNAME }}/bangbangbang
-            sudo docker ps
+            sudo docker run -d --env-file ${{ secrets.ENV_PATH }} ${{ secrets.DOCKER_USERNAME }}/bangbangbang
             sudo docker image prune -f
