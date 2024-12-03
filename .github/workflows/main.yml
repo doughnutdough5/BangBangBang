@@ -37,6 +37,6 @@ jobs:
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bangbangbang
-            sudo docker run ${{ secrets.DOCKER_USERNAME }}/bangbangbang
+            sudo docker run --env-file ${{ secrets.ENV_PATH }} ${{ secrets.DOCKER_USERNAME }}/bangbangbang
             sudo docker ps
             sudo docker image prune -f
