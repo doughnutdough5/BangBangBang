@@ -1,3 +1,3 @@
 export const SQL_QUERIES = {
-  LOAD_LOCATIONS: 'SELECT * FROM spawnlocation',
+  LOAD_LOCATIONS: 'SELECT * FROM SpawnLocation',
 };
