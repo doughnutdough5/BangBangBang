@@ -53,10 +53,8 @@ export const fleaMarketPickHandler = (socket, payload) => {
   gainCardUser.addHandCard(fleaMarketDeck[pickIndex]);
 
   gainCardUser.setCharacterState(getStatefleaMarketTurnOver()); // 플리마켓 카드 선택한 유저 상태 정상화
-  console.log('카드 선택한 유저: ' + gainCardUser.nickname);
 
   if (currentGame.fleaMarketTurn === fleaMarketUsers.length) {
-    console.log('마지막 유저 선택');
     // 마지막 선택 이전에 normal --> 마지막 선택 이후에
     fleaMarketUsers.forEach((user) => {
       user.setCharacterState(getStateNormal());
