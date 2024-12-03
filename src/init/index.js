@@ -11,7 +11,7 @@ const initServer = async () => {
     loadCardTypes();
   } catch (err) {
     console.error(err);
-    process.exit(1);
+    // process.exit(1);
   }
 };
 
