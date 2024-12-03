@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -tt -o StrictHostKeyChecking=no ${{ secrets.SERVER_HOST }} << 'EOF'
             docker pull doughnutdough5/bangbangbang:latest
             docker stop your-app || true
             docker rm your-app || true
