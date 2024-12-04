@@ -113,7 +113,7 @@ const autoShieldCheck = (targetUser, currentGame) => {
   if (isAutoSheildUser) {
     //오토 쉴드 장비
     const autoSheild = Math.random();
-    if (autoSheild < 0.99) {
+    if (autoSheild < 0.25) {
       animationNotification(currentGame.users, targetUser, Packets.AnimationType.SHIELD_ANIMATION);
       return true;
     }
@@ -121,7 +121,7 @@ const autoShieldCheck = (targetUser, currentGame) => {
   if (targetUser.characterData.characterType === Packets.CharacterType.FROGGY) {
     //개굴군
     const autoSheild = Math.random();
-    if (autoSheild < 0.99) {
+    if (autoSheild < 0.25) {
       animationNotification(currentGame.users, targetUser, Packets.AnimationType.SHIELD_ANIMATION);
       return true;
     }
