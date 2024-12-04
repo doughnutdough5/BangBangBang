@@ -21,5 +21,4 @@ export const deathMatchCardHandler = (cardUsingUser, targetUser, currentGame, us
     userUpdateNotification,
     currentGameUsers: currentGame.users,
   });
-  console.log('현피 당한 사람:', targetUser.id);
 };

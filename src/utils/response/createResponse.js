@@ -29,8 +29,5 @@ export const createResponse = (payloadOneofCase, sequence, payload) => {
   const payloadBuffer = Packets.GamePacket.encode(Packets.GamePacket.create(payload)).finish();
   const header = createHeader(payloadOneofCase, sequence, payloadBuffer.length);
 
-  // console.log('\n패킷 타입:', getPacketTypeName(payloadOneofCase));
-  // console.dir(Packets.GamePacket.decode(payloadBuffer), { depth: null });
-
   return Buffer.concat([header, payloadBuffer]);
 };

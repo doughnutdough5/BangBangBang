@@ -16,20 +16,16 @@ export const fleaMarketCardHandler = (cardUsingUser, targetUser, currentGame, us
   // 카드 사용 유저는 첫 번째 유저니까
   const drawCard = currentGame.deck.shift();
   currentGame.fleaMarketDeck.push(drawCard);
-  console.log(`[0] ${currentGame.users[0].nickname}`);
   const len = currentGame.users.length
   for (let i = 1; i < len; i++) {
     const drawCard = currentGame.deck.shift();
     currentGame.fleaMarketDeck.push(drawCard);
     currentGame.users[i].setCharacterState(getStatefleaMarketWait());
-    console.log(`[${i}] ${currentGame.users[i].nickname}`);
   }
-  console.log(`현재 플리마켓 덱: ${JSON.stringify(currentGame.fleaMarketDeck)}`)
 
   cardUsingUser.setCharacterState(getStatefleaMarketTurnEnd());
   fleaMarketNotification(currentGame.fleaMarketDeck, currentGame.fleaMarketPickIndex, currentGame.users);
   userUpdateNotification(currentGame.users);
-  console.log(currentGame.users);
 };
 // 노티피케이션을 먼저 보내주고(게임 인원수 만큼 
 // 카드 뽑아서 배열에 넣고 카드 타입으로 보내주고

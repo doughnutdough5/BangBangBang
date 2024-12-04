@@ -17,13 +17,9 @@ export const cardSelectHandler = (socket, payload) => {
     const targetUser = currentGame.findInGameUserById(cardSelectUser.characterData.stateInfo.stateTargetUserId);
     const usedCardType = cardSelectUser.getCharacterState() === Packets.CharacterStateType.ABSORBING ? Packets.CardType.ABSORB : Packets.CardType.HALLUCINATION; // 현재 상태에 따라 어떤 카드인지
 
-    console.log("타켓 유저 불러오기 성공: " + targetUser.id);
-    console.log(payload.cardSelectRequest.selectType);
     const selectType = payload.cardSelectRequest.selectType;
     let absorbedCard = payload.cardSelectRequest.selectCardType;
-    console.log('뺏은 카드:', absorbedCard)
 
-    console.log('흡수 대상 유저의 흡수 전 장착된 무기 상태: ' + targetUser.characterData.weapon);
     // 신기루, 흡수 공통로직
     if (selectType === Packets.SelectCardType.WEAPON) {
         targetUser.unequipWepon(); // <-- 클라에서는 장착된 상태로 표시됨
@@ -36,19 +32,10 @@ export const cardSelectHandler = (socket, payload) => {
         currentGame.events.cancelEvent(targetUser.id, 'warningTimer')
     } else {
         const randomHandCard = targetUser.selectRandomHandCard();
-        console.log(randomHandCard);
         targetUser.removeHandCard(randomHandCard);
         absorbedCard = randomHandCard;
     };
- 
-    console.log(`카드 사용 유저: ${cardSelectUser.nickname}의 상태는 ${cardSelectUser.getCharacterState()}`)
-    console.log("무기:")
-    console.dir(targetUser.characterData.weapon, {depth: null})
-    console.log("장비:")
-    console.dir(targetUser.characterData.equips, { depth: null })
-    console.log("디버프:")
-    console.dir(targetUser.characterData.debuffs, { depth: null })
-    console.log(`카드 타겟 유저: ${targetUser.nickname}의 상태는 ${targetUser.getCharacterState()}`)
+
     
     if (usedCardType === Packets.CardType.ABSORB) {
         cardSelectUser.addHandCard(absorbedCard);

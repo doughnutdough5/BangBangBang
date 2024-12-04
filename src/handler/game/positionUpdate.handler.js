@@ -4,7 +4,6 @@ import { getUserBySocket } from '../../sessions/user.session.js';
 import positionUpdateNotification from '../../utils/notification/positionUpdate.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
-// 위치 동기화는 Response가 없었음
 export const positionUpdateHandler = (socket, payload) => {
   const { x, y } = payload.positionUpdateRequest;
 
@@ -15,7 +14,6 @@ export const positionUpdateHandler = (socket, payload) => {
   const distance = Math.sqrt(Math.pow(x - prevX + Math.pow(y - prevY)));
   // 한번에 10 이상 이동했다
   if (distance > 10) {
-    console.error('한 번에 10 이동함. 핵 아님?');
     // const errorResponsePayload = {
     //   positionUpdateResponse: {
     //     success: false,
@@ -41,25 +39,3 @@ export const positionUpdateHandler = (socket, payload) => {
   });
 };
 
-/*
-message C2SPositionUpdateRequest {
-    double x = 1;
-    double y = 2;
-}
-
-message S2CPositionUpdateResponse {
-    bool success = 1;
-    GlobalFailCode failCode = 2;
-}
-
-message S2CPositionUpdateNotification {
-    repeated CharacterPositionData characterPositions = 1;
-}
-
-message CharacterPositionData {
-    int64 id = 1; // 유저의 아이디
-    double x = 2;
-    double y = 3;
-}
-    
-*/

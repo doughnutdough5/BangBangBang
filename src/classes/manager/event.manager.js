@@ -18,7 +18,6 @@ class EventManager {
       targetUser.setCharacterState(stateNormal);
       targetUser.decreaseHp(cardUsingUser.damage);
       userUpdateNotification(currentGameUsers);
-      console.log('5초 지나서 이제 쉴드 못씀');
     });
 
     this.eventEmitter.on('finishShieldWaitOnBigBbang', (params) => {
@@ -124,7 +123,6 @@ class EventManager {
   }
 
   clearAll() {
-    console.log('삭제 전 이벤트 매니저:');
     console.dir(this.events, { depth: null });
     this.events.forEach((e) => {
       e.forEach((id) => {
@@ -133,7 +131,6 @@ class EventManager {
     });
 
     this.events.clear();
-    console.log('삭제 후 이벤트 매니저:');
     console.dir(this.events, { depth: null });
   }
 }

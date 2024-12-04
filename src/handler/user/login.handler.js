@@ -10,13 +10,11 @@ import User from '../../classes/model/user.class.js';
 
 export const loginHandler = async (socket, payload) => {
   const { email, password } = payload.loginRequest;
-  console.log({ email, password });
 
   try {
     const user = await findUserByEmail(email);
     if (!user) {
       const errorMessage = `${email}: 없는 email입니다.`;
-      console.error(errorMessage);
       const errorResponse = {
         loginResponse: {
           success: false,
@@ -34,7 +32,6 @@ export const loginHandler = async (socket, payload) => {
     //패스워드 확인
     if (!(await bcrypt.compare(password, user.password))) {
       const errorMessage = '비밀번호가 틀렸습니다.';
-      console.error(errorMessage);
       const errorResponse = {
         loginResponse: {
           success: false,
@@ -49,12 +46,10 @@ export const loginHandler = async (socket, payload) => {
       return;
     }
 
-    // TODO: 중복로그인 체크
-    // 기존 세션에 있는 유저면 컷
+    // 기존 세션에 있는 유저면 로그인 불가
     const loginedUser = findUserById(user.id);
     if (loginedUser) {
       const errorMessage = '이미 사용중인 아이디입니다.';
-      console.error(errorMessage);
       const errorResponse = {
         loginResponse: {
           success: false,

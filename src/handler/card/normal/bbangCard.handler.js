@@ -67,7 +67,6 @@ const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
   cardUsingUser.increaseBbangCount();
   const autoSheildSuccess = autoShieldCheck(targetUser, currentGame);
 
-  console.log('오토 쉴드 체크', autoSheildSuccess);
   if (autoSheildSuccess) {
     //자동 방어 성공 시 : 자동쉴드 효과 알림
     cardEffectNotification(currentGame, Packets.CardType.AUTO_SHIELD, cardUsingUser);
@@ -104,7 +103,6 @@ const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
     }
   }
 
-  console.log('빵야 당한 사람:', targetUser.id);
 };
 
 //캐릭터 특성 - 개굴군, 장비 특성 - 자동 방어
@@ -140,7 +138,6 @@ const needShieldCheck = (cardUsingUser, targetUser, currentGame, needShield) => 
       return 0;
     }
   });
-  console.log(`쉴드 개수 ${shieldCount}`);
 
   if (shieldCount < needShield) {
     targetUser.decreaseHp(cardUsingUser.damage);

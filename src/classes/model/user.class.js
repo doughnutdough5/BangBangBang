@@ -66,8 +66,6 @@ class User {
   }
 
   overHandedCount() {
-    console.log(`현재 카드 수: ${this.characterData.handCardsCount}`);
-    console.log(`현재 HP: ${this.characterData.hp}`);
     return this.characterData.handCardsCount - this.characterData.hp;
   }
 
@@ -245,7 +243,6 @@ class User {
   }
 
   removeHandCard(usingCard) {
-    console.log(`${usingCard} 삭제`);
     const index = this.characterData.handCards.findIndex((card) => card.type === usingCard);
 
     // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
@@ -273,23 +270,15 @@ class User {
 
   removeDebuffCard(debuff) {
     const index = this.characterData.debuffs.findIndex((element) => element === debuff);
-    console.log('debuff 삭제:', this.characterData.debuffs[index]);
     if (index !== -1) {
       this.characterData.debuffs.splice(index, 1);
     }
-  }
-
-  // TEST: 테스트용임
-  logUserHandCards() {
-    console.log(`[${this.id}] ${this.nickname}의 핸드 카드`);
-    console.dir(this.characterData.handCards, { depth: null });
   }
 
   hasShieldCard() {
     const shieldCard = this.characterData.handCards.find((card) => {
       return card.type === Packets.CardType.SHIELD;
     });
-    console.log('유저의 핸드 카드들:', this.characterData.handCards);
 
     return shieldCard ? true : false;
   }
@@ -298,11 +287,11 @@ class User {
     const shieldCard = this.characterData.handCards.find((card) => {
       return card.type === Packets.CardType.BBANG;
     });
-    console.log('유저의 핸드 카드들:', this.characterData.handCards);
 
     return shieldCard ? true : false;
   }
 
+  // 이거 안쓰지 않나
   userStateTimeout(state) {
     //nextStateAt
     const { inGameUsers, currentState, nextState, nextStateAt, targetUserId, time } = state;

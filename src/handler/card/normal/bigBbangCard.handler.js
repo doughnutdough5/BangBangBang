@@ -18,7 +18,7 @@ export const bigBbangCardHandler = (cardUsingUser, targetUser, currentGame, useC
         userUpdateNotification,
         currentGameUsers: currentGame.users,
       });
-      console.log('난사 당한 사람:', user.id);
+
     }
   });
 };

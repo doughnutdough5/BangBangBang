@@ -13,12 +13,3 @@ export const cardEffectNotification = (currentGame, useCardType, cardUsingUser) 
     user.socket.write(createResponse(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, 0, responsePayload));
   });
 };
-
-/**
- * 
- * message S2CCardEffectNotification {
-    CardType cardType = 1;
-    int64 userId = 2;
-    bool success = 3;
-}
- */
