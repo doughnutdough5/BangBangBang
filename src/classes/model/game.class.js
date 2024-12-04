@@ -28,7 +28,6 @@ class Game {
     this.events = new EventManager();
     this.intervalManager = new IntervalManager();
     this.events.init();
-    this.day = 1;
   }
 
   release() {
