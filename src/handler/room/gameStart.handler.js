@@ -59,8 +59,13 @@ export const gameStartHandler = (socket, payload) => {
   currentGame.state = Packets.RoomStateType.INAGAME;
 
   // 죽은 유저 체크
-  currentGame.intervalManager.addDeathPlayer(currentGame);
-
+  const isMask = currentGame.users.find(
+    (user) => user.characterData.characterType === Packets.CharacterType.MASK,
+  );
+  if (isMask) {
+    //마스크군이 존재할 때
+    currentGame.intervalManager.addDeathPlayer(currentGame); 
+  }
   // 핑크 체크
   const isPink = currentGame.users.find(
     (user) => user.characterData.characterType === Packets.CharacterType.PINK,

@@ -28,6 +28,7 @@ class Game {
     this.events = new EventManager();
     this.intervalManager = new IntervalManager();
     this.events.init();
+    this.day = 1;
   }
 
   release() {
@@ -36,10 +37,6 @@ class Game {
     this.intervalManager = null;
     this.events.eventEmitter = null;
     this.events = null;
-  }
-
-  getAliveUsers() {
-    return this.users.filter((user) => user.isAlive());
   }
 
   returnCardToDeck(cardType) {

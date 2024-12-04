@@ -37,7 +37,7 @@ export const joinRoomHandler = (socket, payload) => {
   }
 
   if (game.isGamingRoom()) {
-    const errorResponsePayload = {
+      const errorResponsePayload = {
       joinRoomResponse: {
         success: false,
         room: null,
@@ -121,3 +121,4 @@ export const joinRandomRoomHandler = (socket, payload) => {
 
   socket.write(createResponse(PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, 0, responsePayload));
 };
+

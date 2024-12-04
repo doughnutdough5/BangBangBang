@@ -7,4 +7,5 @@ export const loadCharacterPositionsFromDB = async () => {
   characterPositions = positions.map((pos) => {
     return { id: pos.id, x: pos.x, y: pos.y };
   });
+
 };
