@@ -63,6 +63,7 @@ export const fleaMarketPickHandler = (socket, payload) => {
     fleaMarketUsers[currentGame.fleaMarketTurn].setCharacterState(getStatefleaMarketTurnEnd()); // 플리마켓 대기 배열에 남아있는 첫번째 유저 상태 변경
   }
 
+  // 플리마켓 유저풀이랑 기존 유저풀의 동기화 체크 여부
   fleaMarketNotification(fleaMarketDeck, currentGame.fleaMarketPickIndex, fleaMarketUsers);
   userUpdateNotification(fleaMarketUsers);
 
