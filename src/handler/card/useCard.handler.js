@@ -25,7 +25,19 @@ export const useCardHandler = (socket, payload) => {
   const currentGame = findGameById(cardUsingUser.roomId);
   const targetUser = currentGame.findInGameUserById(targetUserId);
 
-  // TODO: 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
+  // 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
+  if (currentGame.currentPhase === Packets.PhaseType.END){
+    const errorPayload = {
+      useCardResponse: {
+        success: false,
+        failCode: Packets.GlobalFailCode.INVALID_PHASE, 
+      },
+    };
+  
+    socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorPayload));
+    return;
+  }
+
 
   const cardHandler = getCardHandlerByCardType(useCardType);
   if (!cardHandler) {
@@ -52,15 +64,11 @@ export const useCardHandler = (socket, payload) => {
   //   };
   //   return errorResponse;
   // }
+  
   // 공통 로직
-  // cardUsingUser.decreaseHandCardsCount(); // 카드 사용자의 손에 들고 있던 카드 수 감소
   cardUsingUser.removeHandCard(useCardType); // 카드 사용자의 손에 들고 있던 카드 제거
   currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
 
-  // 카드를 사용하고 덱에서 삭제 되었을 때, 손에 남은 카드가 0이고 캐릭터가 핑크군이면 실행
-  // if (cardUsingUser.characterData.handCardsCount === 0) {
-  //   characterTypeGetCard(cardUsingUser, currentGame);
-  // }
   const useCardNotificationResponse = useCardNotification(
     useCardType,
     cardUsingUser.id,
@@ -88,10 +96,3 @@ export const useCardHandler = (socket, payload) => {
   socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, responsePayload));
 };
 
-// //캐릭터 특성 - 핑크
-// const characterTypeGetCard = (user, game) => {
-//   if (user.characterData.characterType === Packets.CharacterType.PINK) {
-//     const card = game.deck.shift();
-//     user.addHandCard(card);
-//   }
-// };
