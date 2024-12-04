@@ -14,9 +14,8 @@ import userUpdateNotification from '../../utils/notification/userUpdate.notifica
 export const fleaMarketPickHandler = (socket, payload) => {
   const gainCardUser = getUserBySocket(socket);
   const currentGame = findGameById(gainCardUser.roomId);
-  // const fleaMarketTurn = currentGame.fleaMarketTurn
   const fleaMarketDeck = currentGame.fleaMarketDeck;
-  const fleaMarketUsers = currentGame.users;
+  const fleaMarketUsers = currentGame.fleaMarketUsers;
   const pickIndex = payload.fleaMarketPickRequest.pickIndex;
 
   // 현재 턴인 사람과 request로 날아온 사람의 id가 다를 때 === 현재
@@ -58,7 +57,6 @@ export const fleaMarketPickHandler = (socket, payload) => {
     fleaMarketUsers.forEach((user) => {
       user.setCharacterState(getStateNormal());
     });
-
   } else {
     fleaMarketUsers[currentGame.fleaMarketTurn].setCharacterState(getStatefleaMarketTurnEnd()); // 플리마켓 대기 배열에 남아있는 첫번째 유저 상태 변경
   }

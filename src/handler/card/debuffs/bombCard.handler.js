@@ -28,23 +28,3 @@ export const bombCardHandler = (cardUsingUser, targetUser, currentGame, useCardT
     bombTimer,
   });
 };
-
-// 30초 후 폭발하여 데미지, 다른유저에게 이전 가능
-// S2CWarningNotification warningNotification = 44;
-// C2SPassDebuffRequest passDebuffRequest = 42;
-// S2CPassDebuffResponse passDebuffResponse = 43;
-
-/*
-enum WarningType {
-    NO_WARNING = 0;
-    BOMB_WANING = 1;
-}
-
-enum AnimationType {
-    NO_ANIMATION = 0;
-    SATELLITE_TARGET_ANIMATION = 1;
-    BOMB_ANIMATION = 2;
-    SHIELD_ANIMATION = 3;
-}
-
-*/

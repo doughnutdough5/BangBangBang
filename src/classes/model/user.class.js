@@ -19,7 +19,6 @@ class User {
     this.lastUpdateTime = Date.now();
     this.roomId = null;
     this.maxHp = null;
-    
 
     this.maxBbangCount = 0;
     this.damage = 1;
@@ -28,6 +27,10 @@ class User {
   // getStateTargetUserId() {
   //   return this.characterData.stateInfo.stateTargetUserId;
   // }
+
+  isAlive() {
+    return this.characterData.alive;
+  }
 
   equipWepon(weapon) {
     switch (weapon) {
@@ -182,7 +185,11 @@ class User {
   }
 
   decreaseHp(damage = 1) {
+    console.log(`decreaseHp의 damage: ${damage}`);
     this.characterData.hp -= damage;
+    if (this.characterData.hp < 0) {
+      this.characterData.hp = 0;
+    }
   }
 
   setWeapon(weapon) {
@@ -250,7 +257,7 @@ class User {
     // count-- => count === 0 객체를 아예 삭제
     if (index !== -1) {
       const cnt = --this.characterData.handCards[index].count;
-        this.decreaseHandCardsCount();
+      this.decreaseHandCardsCount();
       if (cnt === 0) {
         // 남은 카드 없음
         this.characterData.handCards.splice(index, 1);
@@ -349,7 +356,7 @@ class User {
         equips: this.characterData.equips,
         debuffs: this.characterData.debuffs,
         handCards: this.characterData.handCards,
-        bbangCount: this.characterData.bbangCount, 
+        bbangCount: this.characterData.bbangCount,
         handCardsCount: this.characterData.handCardsCount,
       },
     };
@@ -357,4 +364,3 @@ class User {
 }
 
 export default User;
-

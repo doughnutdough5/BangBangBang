@@ -19,79 +19,73 @@ import getCardHandlerByCardType from './index.js';
 // 핑크슬라임 (CHA00013) 피격 시 가해자의 카드를 한장 가져옴. //
 
 export const useCardHandler = (socket, payload) => {
-  const useCardType = payload.useCardRequest.cardType; //사용 카드
-  const targetUserId = payload.useCardRequest.targetUserId.low; //대상자 ID
-  const cardUsingUser = getUserBySocket(socket); //카드 사용자
-  const currentGame = findGameById(cardUsingUser.roomId);
-  const targetUser = currentGame.findInGameUserById(targetUserId);
+  try {
+    const useCardType = payload.useCardRequest.cardType; //사용 카드
+    const targetUserId = payload.useCardRequest.targetUserId.low; //대상자 ID
+    const cardUsingUser = getUserBySocket(socket); //카드 사용자
+    const currentGame = findGameById(cardUsingUser.roomId);
+    const targetUser = currentGame.findInGameUserById(targetUserId);
 
-  // TODO: 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
+    // 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
+    if (currentGame.currentPhase === Packets.PhaseType.END) {
+      const errorPayload = {
+        useCardResponse: {
+          success: false,
+          failCode: Packets.GlobalFailCode.INVALID_PHASE,
+        },
+      };
 
-  const cardHandler = getCardHandlerByCardType(useCardType);
-  if (!cardHandler) {
-    console.error('카드 핸들러를 찾을 수 없습니다.');
-    return;
-  }
+      socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorPayload));
+      userUpdateNotification(currentGame.users);
 
-  // 에러 안나면 아무것도 반환하지 않기
-  const errorResponse = cardHandler(cardUsingUser, targetUser, currentGame, useCardType);
-  if (errorResponse) {
-    // 뭔가 에러가 났음.
-    console.error('카드 핸들러: 뭔가 문제 있음');
-    socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorResponse));
-    return;
-  }
+      return;
+    }
 
-  // if (!cardUsingUser.canUseBbang()) {
-  //   // 빵야 실패
-  //   const errorResponse = {
-  //     useCardResponse: {
-  //       success: false,
-  //       failCode: Packets.GlobalFailCode.ALREADY_USED_BBANG,
-  //     },
-  //   };
-  //   return errorResponse;
-  // }
-  // 공통 로직
-  // cardUsingUser.decreaseHandCardsCount(); // 카드 사용자의 손에 들고 있던 카드 수 감소
-  cardUsingUser.removeHandCard(useCardType); // 카드 사용자의 손에 들고 있던 카드 제거
-  currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
+    const cardHandler = getCardHandlerByCardType(useCardType);
+    if (!cardHandler) {
+      console.error('카드 핸들러를 찾을 수 없습니다.');
+      return;
+    }
 
-  // 카드를 사용하고 덱에서 삭제 되었을 때, 손에 남은 카드가 0이고 캐릭터가 핑크군이면 실행
-  // if (cardUsingUser.characterData.handCardsCount === 0) {
-  //   characterTypeGetCard(cardUsingUser, currentGame);
-  // }
-  const useCardNotificationResponse = useCardNotification(
-    useCardType,
-    cardUsingUser.id,
-    targetUserId,
-  );
+    // 에러 안나면 아무것도 반환하지 않기
+    const errorResponse = cardHandler(cardUsingUser, targetUser, currentGame, useCardType);
+    if (errorResponse) {
+      // 뭔가 에러가 났음.
+      console.error('카드 핸들러: 뭔가 문제 있음');
+      socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorResponse));
+      return;
+    }
 
-  //게임 방 안에 모든 유저들에게 카드 사용알림
-  currentGame.users.forEach((user) => {
-    user.socket.write(
-      createResponse(PACKET_TYPE.USE_CARD_NOTIFICATION, 0, useCardNotificationResponse),
+    // 공통 로직
+    cardUsingUser.removeHandCard(useCardType); // 카드 사용자의 손에 들고 있던 카드 제거
+    currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
+
+    const useCardNotificationResponse = useCardNotification(
+      useCardType,
+      cardUsingUser.id,
+      targetUserId,
     );
-  });
 
-  // 동기화
-  userUpdateNotification(currentGame.users);
+    //게임 방 안에 모든 유저들에게 카드 사용알림
+    currentGame.users.forEach((user) => {
+      user.socket.write(
+        createResponse(PACKET_TYPE.USE_CARD_NOTIFICATION, 0, useCardNotificationResponse),
+      );
+    });
 
-  // 성공 response 전송
-  const responsePayload = {
-    useCardResponse: {
-      success: true,
-      failCode: Packets.GlobalFailCode.NONE_FAILCODE,
-    },
-  };
+    // 동기화
+    userUpdateNotification(currentGame.users);
 
-  socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, responsePayload));
+    // 성공 response 전송
+    const responsePayload = {
+      useCardResponse: {
+        success: true,
+        failCode: Packets.GlobalFailCode.NONE_FAILCODE,
+      },
+    };
+
+    socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, responsePayload));
+  } catch (e) {
+    console.error(e);
+  }
 };
-
-// //캐릭터 특성 - 핑크
-// const characterTypeGetCard = (user, game) => {
-//   if (user.characterData.characterType === Packets.CharacterType.PINK) {
-//     const card = game.deck.shift();
-//     user.addHandCard(card);
-//   }
-// };

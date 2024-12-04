@@ -2,7 +2,6 @@ import Game from '../classes/model/game.class.js';
 import { gameSession } from './session.js';
 
 export const addGameSession = (gameId, ownerId, name, maxUserNum) => {
-  // id, ownerId, name, maxUserNum
   const session = new Game(gameId, ownerId, name, maxUserNum);
   gameSession.push(session);
   return session;
