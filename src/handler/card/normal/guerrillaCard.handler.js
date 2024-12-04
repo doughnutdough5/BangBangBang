@@ -19,7 +19,6 @@ export const guerrillaCardHandler = (cardUsingUser, targetUser, currentGame, use
         userUpdateNotification,
         currentGameUsers: currentGame.users,
       });
-      console.log('게릴라 당한 사람:', user.id);
     }
   });
 };
