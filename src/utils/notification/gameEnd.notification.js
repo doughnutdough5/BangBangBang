@@ -24,7 +24,6 @@ export const gameEndNotification = async (room) => {
   let winners = null;
   if (!isTarget && !isBodyguard && !isHitman) {
     //싸이코패스 승리
-    console.log('싸이코패스 승리');
     winners = room.users.filter(
       (user) => user.characterData.roleType === Packets.RoleType.PSYCHOPATH,
     );
@@ -37,7 +36,6 @@ export const gameEndNotification = async (room) => {
     };
   } else if (!isHitman && !isPsychopath) {
     //타겟 & 보디가드 승리
-    console.log('타겟 & 보디가드 승리');
     winners = room.users.filter(
       (user) =>
         user.characterData.roleType === Packets.RoleType.TARGET ||
@@ -52,7 +50,6 @@ export const gameEndNotification = async (room) => {
     };
   } else if (!isTarget) {
     //히트맨 승리
-    console.log('히트맨 승리');
     winners = room.users.filter((user) => user.characterData.roleType === Packets.RoleType.HITMAN);
     const winnerIds = winners.map((user) => user.id);
     responsePayload = {
@@ -63,7 +60,6 @@ export const gameEndNotification = async (room) => {
     };
   }
 
-  console.log('인터벌 작동 - ', responsePayload);
   if (responsePayload) {
     // 기록 저장
     const losers = room.users.filter((user) => !winners.some((winner) => winner.id === user.id));
@@ -79,21 +75,7 @@ export const gameEndNotification = async (room) => {
     room.users.forEach((user) => {
       user.socket.write(createResponse(PACKET_TYPE.GAME_END_NOTIFICATION, 0, responsePayload));
     });
-    //게임 종료 시 인터벌 제거, 세션 삭제
 
-    // removeGameSession에서 인터벌과 이벤트를 비워주는 release 메서드 호출
     removeGameSession(room.id);
-    console.log('게임 세션 삭제');
   }
 };
-
-// message S2CGameEndNotification {
-//     repeated int64 winners = 1;
-//     WinType winType = 2;
-// }
-
-// enum WinType {
-//     TARGET_AND_BODYGUARD_WIN = 0;
-//     HITMAN_WIN = 1;
-//     PSYCHOPATH_WIN = 2;
-// }

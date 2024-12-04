@@ -17,7 +17,6 @@ import { cardSelectHandler } from './card/cardSelect.handler.js';
 import { passDebuffHandler } from './game/passDebuff.handler.js';
 
 const handlers = {
-  // 회원가입 및 로그인
   [PACKET_TYPE.REGISTER_REQUEST]: { handler: registerHandler },
   [PACKET_TYPE.LOGIN_REQUEST]: { handler: loginHandler },
   [PACKET_TYPE.GET_ROOM_LIST_REQUEST]: { handler: getRoomListHandler },

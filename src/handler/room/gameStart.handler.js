@@ -62,17 +62,15 @@ export const gameStartHandler = (socket, payload) => {
   const isMask = currentGame.users.find(
     (user) => user.characterData.characterType === Packets.CharacterType.MASK,
   );
-  console.log('마스크군 존재 여부:', isMask);
   if (isMask) {
-    console.log('마스크군 존재');
-    currentGame.intervalManager.addDeathPlayer(currentGame); //마스크군이 존재할 때
+    //마스크군이 존재할 때
+    currentGame.intervalManager.addDeathPlayer(currentGame); 
   }
   // 핑크 체크
   const isPink = currentGame.users.find(
     (user) => user.characterData.characterType === Packets.CharacterType.PINK,
   );
   if (isPink) {
-    console.log('핑크군 존재');
     currentGame.intervalManager.addHandCardCheck(currentGame);
   }
 
@@ -81,14 +79,3 @@ export const gameStartHandler = (socket, payload) => {
 
   socket.write(createResponse(PACKET_TYPE.GAME_START_RESPOSNE, 0, responsePayload));
 };
-
-// GlobalFailCode:
-//  CHARACTER_NOT_FOUND = 9;
-//  CHARACTER_STATE_ERROR = 10;
-//  CHARACTER_NO_CARD = 11;
-//  INVALID_ROOM_STATE = 12;
-
-// message S2CGameStartResponse {
-//     bool success = 1;
-//     GlobalFailCode failCode = 2;
-// }

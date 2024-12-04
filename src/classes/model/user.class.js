@@ -19,7 +19,7 @@ class User {
     this.roomId = null;
     this.maxHp = null;
 
-    this.maxBbangCount = 0; // 나중에 prepare에서 캐릭터 특성에 따라 처리, 게임 진행 도중 장비에 따라 증감/ 원래 상태를 저장해두는 형태는 어떤지?
+    this.maxBbangCount = 0;
     this.damage = 1;
   }
 
@@ -66,8 +66,6 @@ class User {
   }
 
   overHandedCount() {
-    console.log(`현재 카드 수: ${this.characterData.handCardsCount}`);
-    console.log(`현재 HP: ${this.characterData.hp}`);
     return this.characterData.handCardsCount - this.characterData.hp;
   }
 
@@ -75,8 +73,6 @@ class User {
     this.characterData.bbangCount = this.maxBbangCount;
   }
 
-  // 빵 카운트가 음수로 클라에서 처리되고 있음
-  // 맥스가 음수로 더 내려갈 수록 빵야 쏠 수 있는 횟수가 늘어남
   canUseBbang() {
     // true를 반환했을때 빵 가능
     return (
@@ -245,7 +241,6 @@ class User {
   }
 
   removeHandCard(usingCard) {
-    console.log(`${usingCard} 삭제`);
     const index = this.characterData.handCards.findIndex((card) => card.type === usingCard);
 
     // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
@@ -253,9 +248,7 @@ class User {
     // count-- => count === 0 객체를 아예 삭제
     if (index !== -1) {
       const cnt = --this.characterData.handCards[index].count;
-      // --this.characterDataHandCards[index].count;
-      this.decreaseHandCardsCount(); // removeHandCard에서 카드 카운트를 한 번 더해버려 손패 개수가 카드 한 장 사용할 때마다 2장씩 빠짐
-      // if (this.characterDataHandCards[index].count === 0)
+        this.decreaseHandCardsCount();
       if (cnt === 0) {
         // 남은 카드 없음
         this.characterData.handCards.splice(index, 1);
@@ -273,23 +266,15 @@ class User {
 
   removeDebuffCard(debuff) {
     const index = this.characterData.debuffs.findIndex((element) => element === debuff);
-    console.log('debuff 삭제:', this.characterData.debuffs[index]);
     if (index !== -1) {
       this.characterData.debuffs.splice(index, 1);
     }
-  }
-
-  // TEST: 테스트용임
-  logUserHandCards() {
-    console.log(`[${this.id}] ${this.nickname}의 핸드 카드`);
-    console.dir(this.characterData.handCards, { depth: null });
   }
 
   hasShieldCard() {
     const shieldCard = this.characterData.handCards.find((card) => {
       return card.type === Packets.CardType.SHIELD;
     });
-    console.log('유저의 핸드 카드들:', this.characterData.handCards);
 
     return shieldCard ? true : false;
   }
@@ -298,11 +283,11 @@ class User {
     const shieldCard = this.characterData.handCards.find((card) => {
       return card.type === Packets.CardType.BBANG;
     });
-    console.log('유저의 핸드 카드들:', this.characterData.handCards);
 
     return shieldCard ? true : false;
   }
 
+  // 이거 안쓰지 않나
   userStateTimeout(state) {
     //nextStateAt
     const { inGameUsers, currentState, nextState, nextStateAt, targetUserId, time } = state;
@@ -348,9 +333,9 @@ class User {
       id: this.id,
       nickname: this.nickname,
       character: {
-        characterType: this.characterData.characterType, // 1
-        roleType: this.characterData.roleType, // 2
-        hp: this.characterData.hp, // 3
+        characterType: this.characterData.characterType,
+        roleType: this.characterData.roleType,
+        hp: this.characterData.hp,
         weapon: this.characterData.weapon,
         alive: this.characterData.alive,
         stateInfo: {
@@ -361,9 +346,9 @@ class User {
         },
         equips: this.characterData.equips,
         debuffs: this.characterData.debuffs,
-        handCards: this.characterData.handCards, // 4
-        bbangCount: this.characterData.bbangCount, // 5
-        handCardsCount: this.characterData.handCardsCount, // this.characterData.handCards.length
+        handCards: this.characterData.handCards,
+        bbangCount: this.characterData.bbangCount, 
+        handCardsCount: this.characterData.handCardsCount,
       },
     };
   }
@@ -371,14 +356,3 @@ class User {
 
 export default User;
 
-// message UserData {
-//     string id = 1;
-//     string nickname = 2;
-//     CharacterData character = 3;
-// }
-
-// message UserData {
-//   int64 id = 1;
-//   string nickname = 2;
-//   CharacterData character = 3;
-// }

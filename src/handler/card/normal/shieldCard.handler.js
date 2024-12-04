@@ -1,9 +1,8 @@
-import { getStateNormal } from '../../constants/stateType.js';
-import { Packets } from '../../init/loadProtos.js';
+import { getStateNormal } from '../../../constants/stateType.js';
+import { Packets } from '../../../init/loadProtos.js';
 
 export const shieldCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   // 쉴드 사용하려는 사람이 빵야 맞은 사람
-  console.log('쉴드 쓴 사람:', cardUsingUser.id);
   const isLaserUser = targetUser.characterData.equips.find((card) => {
     if (card === Packets.CardType.LASER_POINTER) return true;
   });

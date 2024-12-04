@@ -8,5 +8,4 @@ export const loadCharacterPositionsFromDB = async () => {
     return { id: pos.id, x: pos.x, y: pos.y };
   });
 
-  console.dir(characterPositions);
 };

@@ -4,14 +4,9 @@ import { createResponse } from '../../utils/response/createResponse.js';
 import { createUser, findUserByEmail } from '../../db/user/user.db.js';
 import bcrypt from 'bcrypt'
 import Joi from 'joi';
-// message C2SRegisterRequest {
-//     string email = 1;
-//     string nickname = 2;
-//     string password = 3;
-// }
+
 export const registerHandler = async (socket, payload) => {
   const { email, nickname, password } = payload.registerRequest;
-  console.log(`nickname: ${nickname}, password: ${password}, email: ${email}`);
   
   try {
     const schema = Joi.object({
@@ -55,7 +50,6 @@ export const registerHandler = async (socket, payload) => {
     const hashedPW = await bcrypt.hash(password, 10);
 
     await createUser(email, hashedPW, nickname)
-    console.log("PACKET_TYPE.GlobalFailCode:",PACKET_TYPE.GlobalFailCode)
     // 응답 생성
     const responsePayload = {
       registerResponse: {

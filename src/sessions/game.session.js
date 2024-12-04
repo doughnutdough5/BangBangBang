@@ -38,8 +38,6 @@ export const joinGameSession = (gameId, user) => {
     console.error('게임을 찾지 못했습니다.');
     return null;
   }
-  // console.log(`gameId: ${gameId}`)
-  // console.log(gameSession[index])
   gameSession[index].users.push(user);
 
   return gameSession[index];

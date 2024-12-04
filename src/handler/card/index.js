@@ -1,27 +1,27 @@
 // CardHandler 맵핑 해둘 곳
-import { bbangCardHandler } from './bbangCard.handler.js';
-import { bigBbangCardHandler } from './bigBbangCard.handler.js';
-import { call119CardHandler } from './call119Card.handler.js';
-import { guerrillaCardHandler } from './guerrillaCard.handler.js';
-import { maturedSavingsCardHandler } from './maturedSavingsCard.handler.js';
-import { shieldCardHandler } from './shieldCard.handler.js';
-import { vaccineCardHandler } from './vaccineCard.handler.js';
-import { winLotteryCardHandler } from './winLotteryCard.handler.js';
-import { deathMatchCardHandler } from './deathMatchCard.handler.js';
-import { hallucinationCardHandler } from './hallucinationCard.handler.js';
-import { fleaMarketCardHandler } from './fleaMarketCard.handler.js';
-import { absorbCardHandler } from './absorbCard.handler.js';
-import { containmentUnitCardHandler } from './containmentUnitCard.handler.js';
-import { bombCardHandler } from './bombCard.handler.js';
-import { satelliteTargetCardHandler } from './satelliteTargetCard.handler.js';
-import { handGunCardHandler } from './handGunCard.handler.js';
-import { desertEagleCardHandler } from './desertEagleCard.handler.js';
-import { autoRifleCardHandler } from './autoRifleCard.handler.js';
-import { sniperGunCardHandler } from './sniperGunCard.handler.js';
-import { laserPointerHandler } from './laserPointer.handler.js';
-import { radarHandler } from './radarCard.handler.js';
-import { autoShieldHandler } from './autoShieldCard.handler.js';
-import { stealthSuitHandler } from './stealthSuitCard.handler.js';
+import { bbangCardHandler } from './normal/bbangCard.handler.js';
+import { bigBbangCardHandler } from './normal/bigBbangCard.handler.js';
+import { call119CardHandler } from './normal/call119Card.handler.js';
+import { guerrillaCardHandler } from './normal/guerrillaCard.handler.js';
+import { maturedSavingsCardHandler } from './normal/maturedSavingsCard.handler.js';
+import { shieldCardHandler } from './normal/shieldCard.handler.js';
+import { vaccineCardHandler } from './normal/vaccineCard.handler.js';
+import { winLotteryCardHandler } from './normal/winLotteryCard.handler.js';
+import { deathMatchCardHandler } from './normal/deathMatchCard.handler.js';
+import { hallucinationCardHandler } from './normal/hallucinationCard.handler.js';
+import { fleaMarketCardHandler } from './normal/fleaMarketCard.handler.js';
+import { absorbCardHandler } from './normal/absorbCard.handler.js';
+import { containmentUnitCardHandler } from './debuffs/containmentUnitCard.handler.js';
+import { bombCardHandler } from './debuffs/bombCard.handler.js';
+import { satelliteTargetCardHandler } from './debuffs/satelliteTargetCard.handler.js';
+import { handGunCardHandler } from './weapons/handGunCard.handler.js';
+import { desertEagleCardHandler } from './weapons/desertEagleCard.handler.js';
+import { autoRifleCardHandler } from './weapons/autoRifleCard.handler.js';
+import { sniperGunCardHandler } from './weapons/sniperGunCard.handler.js';
+import { laserPointerHandler } from './equips/laserPointer.handler.js';
+import { radarHandler } from './equips/radarCard.handler.js';
+import { autoShieldHandler } from './equips/autoShieldCard.handler.js';
+import { stealthSuitHandler } from './equips/stealthSuitCard.handler.js';
 
 const cardHandlers = {
   // BBANG 1

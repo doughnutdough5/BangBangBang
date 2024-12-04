@@ -17,7 +17,3 @@ const userUpdateNotification = (users) => {
 };
 
 export default userUpdateNotification;
-
-// message S2CUserUpdateNotification {
-//     repeated UserData user = 1;
-// }

@@ -13,8 +13,6 @@ import { roomManager } from '../../classes/manager/room.manager.js';
 export const leaveRoomHandler = async (socket, payload) => {
   try {
     const leaveUser = getUserBySocket(socket);
-    console.log(`${leaveUser.id} 유저 나감`);
-
     const currentGameId = leaveUser.roomId;
     const currentGame = findGameById(leaveUser.roomId);
 
@@ -43,8 +41,6 @@ export const leaveRoomHandler = async (socket, payload) => {
     users.forEach((user) => {
       user.socket.write(createResponse(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, 0, payload));
     });
-
-    console.log(getAllGameSessions());
 
     const responsePayload = {
       leaveRoomResponse: {

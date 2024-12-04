@@ -3,14 +3,12 @@ import { getStateContained, getStateNormal } from '../../constants/stateType.js'
 import { characterPositions } from '../../init/loadPositions.js';
 import { Packets } from '../../init/loadProtos.js';
 import { animationNotification } from './animation.notification.js';
-import userUpdateNotification from './userUpdate.notification.js';
 
 export const phaseUpdateNotification = (game) => {
   // 낮인 경우만 위치가 다시 셔플돼서 updatePosition
   // 밤에는 현재 위치
   if (game.currentPhase === Packets.PhaseType.DAY) {
     game.day++;
-    console.log(`${game.day}번째 낮`);
 
     const inGameUsers = game.users;
     // 랜덤 위치 뽑기
@@ -21,7 +19,7 @@ export const phaseUpdateNotification = (game) => {
       }
 
       const randId = Math.floor(Math.random() * 20);
-      selectedPositions.add(characterPositions[randId]); // 0부터 방의 20 길이까지의 랜덤
+      selectedPositions.add(characterPositions[randId]);
     }
 
     // 선택된 위치 정보는 JSON의 id고, 그걸 접속한 유저의 아이디로 치환
@@ -35,7 +33,6 @@ export const phaseUpdateNotification = (game) => {
     // 낮이 시작되면 카드 버려주기(어차피 hp보다 적거나 같으면 안버리면 됨)
     inGameUsers.forEach((user) => {
       const userOverHandedCount = user.overHandedCount();
-      console.log(`[${user.nickname}]: 카드 ${userOverHandedCount} 장 자동 삭제`);
 
       if (userOverHandedCount > 0) {
         for (let i = 0; i < userOverHandedCount; i++) {
@@ -60,7 +57,6 @@ export const phaseUpdateNotification = (game) => {
     });
 
     // 페이즈 전환시 25퍼 확률로 감옥가는 로직
-    // 이 로직 전체를 함수화서 prion(inGameUsers)를 할 수 있게 나중에 구현?
     const prisonUsers = inGameUsers.filter((user) =>
       user.characterData.debuffs.includes(Packets.CardType.CONTAINMENT_UNIT),
     );
@@ -73,13 +69,10 @@ export const phaseUpdateNotification = (game) => {
         );
       } else if (!(Math.random() < 0.25)) {
         user.setCharacterState(getStateContained());
-      } else console.log(`${user}가 25퍼 확률을 뚫고 감옥에 가지 않음`);
+      } else return;
     });
 
     // 위성 타겟 로직
-    // 3퍼센트 확률로 체력 3 깎기
-    // 이것도 나중에 함수화하면 좋을 듯?
-    // 애니메이션 추가 해야됨
     const satelliteUser = inGameUsers.find((user) =>
       user.characterData.debuffs.includes(Packets.CardType.SATELLITE_TARGET),
     );
@@ -114,10 +107,6 @@ export const phaseUpdateNotification = (game) => {
     }
   }
 
-  // inGameUsers.forEach((user) => {
-  //   user.resetBbangCount(); // 내부에서 캐릭터 특성에 따라
-  // })
-
   const responsePayload = {
     phaseUpdateNotification: {
       phaseType: game.currentPhase,
@@ -130,9 +119,3 @@ export const phaseUpdateNotification = (game) => {
 
   return responsePayload;
 };
-
-// message S2CPhaseUpdateNotification {
-//     PhaseType phaseType = 1; // DAY 1, EVENING 2, END 3
-//     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
-//     repeated CharacterPositionData characterPositions = 3; // 변경된 캐릭터 위치
-// }

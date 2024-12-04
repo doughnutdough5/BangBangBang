@@ -5,7 +5,7 @@ import { findUserById, getUserBySocket } from '../../sessions/user.session.js';
 import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
 import warningNotification from '../../utils/notification/warning.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import { bombCardHandler } from '../card/bombCard.handler.js';
+import { bombCardHandler } from '../card/debuffs/bombCard.handler.js';
 
 export const passDebuffHandler = (socket, payload) => {
   const passer = getUserBySocket(socket);
@@ -39,13 +39,3 @@ export const passDebuffHandler = (socket, payload) => {
 
 // 30초를 세는 이벤트가 필요? 30초가 지나기 전에 passDebuffHandler 가 날라오면 전에 있던 이벤트 삭제
 // 그럼 패스를 한 유저의 워닝창도 없애주기 위해 노티를 한번더?
-
-// message C2SPassDebuffRequest {
-//     int64 targetUserId = 1;
-//     CardType debuffCardType = 2;
-// }
-
-// message S2CPassDebuffResponse {
-//     bool success = 1;
-//     GlobalFailCode failCode = 2;
-// }

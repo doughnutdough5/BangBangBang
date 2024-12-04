@@ -5,7 +5,7 @@ import { getUserBySocket, removeUser } from '../sessions/user.session.js';
 
 export const onEnd = (socket) => () => {
   try {
-    console.log('클라이언트 연결이 종료되었습니다.');
+    console.log(`Client disconnected from ${socket.remoteAddress}:${socket.remotePort}`);
     const user = getUserBySocket(socket);
     const currentGame = findGameById(user.roomId);
     if (currentGame.state === Packets.RoomStateType.WAIT) {
