@@ -30,7 +30,9 @@ export const reactionHandler = (socket, payload) => {
     user.decreaseHp(lostHp);
   } else {
     //빵야 예외인 경우
+    console.log(`리액션/게릴라 발동 전 hp : ${user.characterData.hp}`)
     user.decreaseHp(lostHp);
+    console.log(`리액션/게릴라 발동 후 hp : ${user.characterData.hp}`)
   }
   characterTypeGetCard(user, targetUser, game, lostHp);
 
