@@ -52,7 +52,10 @@ export const onData = (socket) => async (data) => {
       const decodedPacket = Packets.GamePacket.decode(payload);
       const handler = getHandlerByPacketType(payloadOneofCase);
       if (handler) {
+        const t0 = performance.now();
         await handler(socket, decodedPacket);
+        const t1 = performance.now();
+        console.log(`Handle ${getPacketTypeName(payloadOneofCase)} took ${t1 - t0} milliseconds.`);
       }
     } catch (err) {
       console.error(err);
