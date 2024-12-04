@@ -16,6 +16,7 @@ const characterTypeGetCard = (game, deathUser) => {
   );
 
   if (!maskUser) {
+    userUpdateNotification(game.users);
     return;
   }
   const deathUserHandCards = deathUser.characterData.handCards;
