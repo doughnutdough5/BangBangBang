@@ -58,7 +58,7 @@ export const phaseUpdateNotification = (game) => {
 
           // 빵야 카운트 리셋, 카드 두 개씩 주기
           inGameUsers.forEach((user) => {
-            const gainCards = deck.splice(0, 2);
+            const gainCards = game.deck.splice(0, 2);
             gainCards.forEach((card) => user.addHandCard(card));
             user.resetBbangCount();
           });
@@ -68,20 +68,21 @@ export const phaseUpdateNotification = (game) => {
           // 위성 로직
           satelliteLogic(inGameUsers);
         }
-
-        const responsePayload = {
-          phaseUpdateNotification: {
-            phaseType: game.currentPhase,
-            nextPhaseAt: Date.now() + phaseTime[game.currentPhase],
-            characterPositions: game.users.map((user) => {
-              return { id: user.id, x: user.getX(), y: user.getY() };
-            }),
-          },
-        };
-
-        return responsePayload;
       }
     }
+
+    const time = Date.now() + phaseTime[game.currentPhase];
+    const responsePayload = {
+      phaseUpdateNotification: {
+        phaseType: game.currentPhase,
+        nextPhaseAt: time,
+        characterPositions: game.users.map((user) => {
+          return { id: user.id, x: user.getX(), y: user.getY() };
+        }),
+      },
+    };
+
+    return responsePayload;
   } catch (e) {
     console.error(e);
   }
