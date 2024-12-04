@@ -2,8 +2,8 @@ import {
   getStateGuerrillaShooter,
   getStateGuerrillaTarget,
   getStateNormal,
-} from '../../constants/stateType.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
+} from '../../../constants/stateType.js';
+import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
 
 export const guerrillaCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   currentGame.users.forEach((user) => {

@@ -2,8 +2,8 @@ import {
   getStateBigBbangShooter,
   getStateBigBbangTarget,
   getStateNormal,
-} from '../../constants/stateType.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
+} from '../../../constants/stateType.js';
+import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
 
 // TODO: 피 2씩 다는 거 수정해야함.
 export const bigBbangCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {

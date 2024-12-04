@@ -1,10 +1,8 @@
 import { getStateNormal } from '../../constants/stateType.js';
 import { PACKET_TYPE } from "../../constants/header.js"
-import { characterPositions } from "../../init/loadPositions.js"
 import { Packets } from "../../init/loadProtos.js"
 import { findGameById } from "../../sessions/game.session.js"
 import { getUserBySocket } from "../../sessions/user.session.js"
-import { gameStartNotification } from "../../utils/notification/gameStart.notification.js"
 import { createResponse } from "../../utils/response/createResponse.js"
 import userUpdateNotification from "../../utils/notification/userUpdate.notification.js"
 

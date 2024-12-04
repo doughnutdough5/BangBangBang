@@ -1,9 +1,9 @@
 import {
   getStatefleaMarketTurnEnd,
   getStatefleaMarketWait,
-} from '../../constants/stateType.js';
-import { fleaMarketNotification } from '../../utils/notification/fleaMarket.notification.js'
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js'
+} from '../../../constants/stateType.js';
+import { fleaMarketNotification } from '../../../utils/notification/fleaMarket.notification.js'
+import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js'
 
 export const fleaMarketCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   const cardUsingUserIndex = currentGame.users.findIndex((user) => user.id === cardUsingUser.id);

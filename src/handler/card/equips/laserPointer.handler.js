@@ -1,5 +1,5 @@
-import { Packets } from '../../init/loadProtos.js';
-import equipCardNotification from '../../utils/notification/equipCard.notification.js';
+import { Packets } from '../../../init/loadProtos.js';
+import equipCardNotification from '../../../utils/notification/equipCard.notification.js';
 
 export const laserPointerHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   // cardUsingUser: 조준경 착용자, targetUser: 빵야 맞는 사람

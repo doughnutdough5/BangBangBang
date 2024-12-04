@@ -1,5 +1,5 @@
-import { getStateNormal } from '../../constants/stateType.js';
-import { Packets } from '../../init/loadProtos.js';
+import { getStateNormal } from '../../../constants/stateType.js';
+import { Packets } from '../../../init/loadProtos.js';
 
 export const shieldCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   // 쉴드 사용하려는 사람이 빵야 맞은 사람

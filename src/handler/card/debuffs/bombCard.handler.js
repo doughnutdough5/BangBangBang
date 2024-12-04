@@ -1,7 +1,7 @@
-import { Packets } from '../../init/loadProtos.js';
-import { animationNotification } from '../../utils/notification/animation.notification.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
-import warningNotification from '../../utils/notification/warning.notification.js';
+import { Packets } from '../../../init/loadProtos.js';
+import { animationNotification } from '../../../utils/notification/animation.notification.js';
+import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
+import warningNotification from '../../../utils/notification/warning.notification.js';
 
 export const bombCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   const currentGameUsers = currentGame.users;

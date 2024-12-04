@@ -4,11 +4,11 @@ import {
   getStateNormal,
   getStateDeathInitShooter,
   getStateDeathInitTarget,
-} from '../../constants/stateType.js';
-import { Packets } from '../../init/loadProtos.js';
-import { animationNotification } from '../../utils/notification/animation.notification.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
-import { cardEffectNotification } from '../../utils/notification/cardEffect.notification.js'
+} from '../../../constants/stateType.js';
+import { Packets } from '../../../init/loadProtos.js';
+import { animationNotification } from '../../../utils/notification/animation.notification.js';
+import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
+import { cardEffectNotification } from '../../../utils/notification/cardEffect.notification.js'
 
 export const bbangCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   if (
