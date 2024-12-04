@@ -14,7 +14,6 @@ export const passDebuffHandler = (socket, payload) => {
   const currentGame = findGameById(passer.roomId);
 
   currentGame.events.cancelEvent(passer.id, 'warningTimer');
-  // warningNotification(passer, Packets.WarningType.NO_WARNING, Date.now());
   currentGame.events.cancelEvent(passer.id, 'bombTimer');
 
   passer.characterData.debuffs = passer.characterData.debuffs.filter(

@@ -1,9 +1,9 @@
 const leaveRoomNotification = (user) => {
-    const responsePayload = {
-        leaveRoomNotification: { userId: user.id }
-    };
+  const responsePayload = {
+    leaveRoomNotification: { userId: user.id },
+  };
 
-    return responsePayload;
-}
+  return responsePayload;
+};
 
 export default leaveRoomNotification;

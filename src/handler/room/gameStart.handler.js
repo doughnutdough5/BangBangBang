@@ -59,7 +59,7 @@ export const gameStartHandler = (socket, payload) => {
   currentGame.state = Packets.RoomStateType.INAGAME;
 
   // 죽은 유저 체크
-    currentGame.intervalManager.addDeathPlayer(currentGame); 
+  currentGame.intervalManager.addDeathPlayer(currentGame);
 
   // 핑크 체크
   const isPink = currentGame.users.find(

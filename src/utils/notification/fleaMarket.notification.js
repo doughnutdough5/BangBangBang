@@ -10,6 +10,6 @@ export const fleaMarketNotification = (cardTypes, pickIndex, currentGameUsers) =
   };
 
   currentGameUsers.forEach((user) => {
-    user.socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, 0, responsePayload))
+    user.socket.write(createResponse(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, 0, responsePayload));
   });
 };

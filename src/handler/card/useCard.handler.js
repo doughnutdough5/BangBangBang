@@ -26,20 +26,19 @@ export const useCardHandler = (socket, payload) => {
   const targetUser = currentGame.findInGameUserById(targetUserId);
 
   // 페이즈가 밤이면 에러 리스폰스 반환하기(밤에 카드 사용 막기)
-  if (currentGame.currentPhase === Packets.PhaseType.END){
+  if (currentGame.currentPhase === Packets.PhaseType.END) {
     const errorPayload = {
       useCardResponse: {
         success: false,
-        failCode: Packets.GlobalFailCode.INVALID_PHASE, 
+        failCode: Packets.GlobalFailCode.INVALID_PHASE,
       },
     };
-  
+
     socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorPayload));
-    userUpdateNotification(currentGame.users)
-    
+    userUpdateNotification(currentGame.users);
+
     return;
   }
-
 
   const cardHandler = getCardHandlerByCardType(useCardType);
   if (!cardHandler) {
@@ -56,17 +55,6 @@ export const useCardHandler = (socket, payload) => {
     return;
   }
 
-  // if (!cardUsingUser.canUseBbang()) {
-  //   // 빵야 실패
-  //   const errorResponse = {
-  //     useCardResponse: {
-  //       success: false,
-  //       failCode: Packets.GlobalFailCode.ALREADY_USED_BBANG,
-  //     },
-  //   };
-  //   return errorResponse;
-  // }
-  
   // 공통 로직
   cardUsingUser.removeHandCard(useCardType); // 카드 사용자의 손에 들고 있던 카드 제거
   currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
@@ -97,4 +85,3 @@ export const useCardHandler = (socket, payload) => {
 
   socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, responsePayload));
 };
-

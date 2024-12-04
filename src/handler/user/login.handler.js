@@ -82,7 +82,6 @@ export const loginHandler = async (socket, payload) => {
     };
 
     socket.write(createResponse(PACKET_TYPE.LOGIN_RESPONSE, 0, responsePayload));
-
   } catch (err) {
     console.error(`로그인 에러: ${err}`);
   }
