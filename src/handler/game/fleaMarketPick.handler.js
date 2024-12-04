@@ -16,7 +16,7 @@ export const fleaMarketPickHandler = (socket, payload) => {
   const currentGame = findGameById(gainCardUser.roomId);
   // const fleaMarketTurn = currentGame.fleaMarketTurn
   const fleaMarketDeck = currentGame.fleaMarketDeck;
-  const fleaMarketUsers = currentGame.users;
+  const fleaMarketUsers = currentGame.fleaMarketUsers;
   const pickIndex = payload.fleaMarketPickRequest.pickIndex;
 
   // 현재 턴인 사람과 request로 날아온 사람의 id가 다를 때 === 현재

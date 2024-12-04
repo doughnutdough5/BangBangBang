@@ -29,6 +29,10 @@ class User {
   //   return this.characterData.stateInfo.stateTargetUserId;
   // }
 
+  isAlive() {
+    return this.characterData.alive;
+  }
+
   equipWepon(weapon) {
     switch (weapon) {
       case Packets.CardType.HAND_GUN:

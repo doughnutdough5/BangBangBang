@@ -7,7 +7,9 @@ import userUpdateNotification from '../../../utils/notification/userUpdate.notif
 
 export const fleaMarketCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   const cardUsingUserIndex = currentGame.users.findIndex((user) => user.id === cardUsingUser.id);
-  currentGame.users = currentGame.users.splice(cardUsingUserIndex).concat(currentGame.users.splice(0, cardUsingUserIndex));
+  const aliveUsers = currentGame.users.filter((user) => user.isAlive());
+  currentGame.fleaMarketUsers = aliveUsers.splice(cardUsingUserIndex).concat(aliveUsers.splice(0, cardUsingUserIndex))
+  // currentGame.users = currentGame.users.splice(cardUsingUserIndex).concat(currentGame.users.splice(0, cardUsingUserIndex));
   currentGame.fleaMarketDeck = [];
   currentGame.fleaMarketPickIndex = [];
   currentGame.fleaMarketTurn = 0;
@@ -20,12 +22,12 @@ export const fleaMarketCardHandler = (cardUsingUser, targetUser, currentGame, us
   for (let i = 1; i < len; i++) {
     const drawCard = currentGame.deck.shift();
     currentGame.fleaMarketDeck.push(drawCard);
-    currentGame.users[i].setCharacterState(getStatefleaMarketWait());
+    currentGame.fleaMarketUsers[i].setCharacterState(getStatefleaMarketWait());
   }
 
   cardUsingUser.setCharacterState(getStatefleaMarketTurnEnd());
-  fleaMarketNotification(currentGame.fleaMarketDeck, currentGame.fleaMarketPickIndex, currentGame.users);
-  userUpdateNotification(currentGame.users);
+  fleaMarketNotification(currentGame.fleaMarketDeck, currentGame.fleaMarketPickIndex, currentGame.fleaMarketUsers);
+  userUpdateNotification(currentGame.fleaMarketUsers);
 };
 // 노티피케이션을 먼저 보내주고(게임 인원수 만큼 
 // 카드 뽑아서 배열에 넣고 카드 타입으로 보내주고
