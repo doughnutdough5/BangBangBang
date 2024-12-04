@@ -12,11 +12,9 @@ class Game {
     this.name = name; // 방제목
     this.maxUserNum = maxUserNum;
 
-    // gameStartRequest -> gamePrepareNotification -> gameStart
-    // 방에 아무도 못들어온다 --> PREPARE --> GamePrepareNotification이 날라올 때
     // WAIT, PREPARE, INAGAME
-    this.state = Packets.RoomStateType.WAIT; // 초기값 <-- 생성 기준이니 WAIT (0)
-    this.users = []; // UserData가 들어감 <-- User 클래스에서 CharacterData 관리하기
+    this.state = Packets.RoomStateType.WAIT;
+    this.users = [];
     this.usersNum = 0;
     this.fleaMarketUsers = [];
 
