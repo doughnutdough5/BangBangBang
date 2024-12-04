@@ -8,7 +8,6 @@ export const phaseUpdateNotification = (game) => {
   // 낮인 경우만 위치가 다시 셔플돼서 updatePosition
   // 밤에는 현재 위치
   if (game.currentPhase === Packets.PhaseType.DAY) {
-    game.day++;
 
     const inGameUsers = game.users;
     // 랜덤 위치 뽑기
