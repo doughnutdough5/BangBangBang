@@ -11,26 +11,26 @@ export const positionUpdateHandler = (socket, payload) => {
   const prevX = user.position.x;
   const prevY = user.position.y;
 
-  const distance = Math.sqrt(Math.pow(x - prevX + Math.pow(y - prevY)));
-  // 한번에 10 이상 이동했다
-  if (distance > 10) {
-    // const errorResponsePayload = {
-    //   positionUpdateResponse: {
-    //     success: false,
-    //     failCode: Packets.GlobalFailCode.CHARACTER_STATE_ERROR,
-    //   },
-    // };
-
-    // socket.write(createResponse(PACKET_TYPE.POSITION_UPDATE_RESPONSE, 0, errorResponsePayload));
+  // Throttling 처리: 250ms 이상 경과해야 함
+  const now = Date.now(); 
+  if (user.lastUpdateTime && now - user.lastUpdateTime < 250) {
     return;
   }
 
-  // 성공한 경우
-  user.updatePosition(x, y);
+  // 거리 조건: 0.25 이상 움직여야 함
+  const distance = Math.sqrt(Math.pow(x - prevX, 2) + Math.pow(y - prevY, 2));
+  if (distance < 0.25) {
+    return;
+  }
 
-  // Noti 전송
+  // 좌표 업데이트 및 시간 갱신
+  user.updatePosition(x, y);
+  user.lastUpdateTime = now;
+
+  // 범위 내 유저 필터링 및 알림 전송
   const currentGame = findGameById(user.roomId);
   const inGameUsers = currentGame.users;
+
   const notificationPayload = positionUpdateNotification(inGameUsers);
   inGameUsers.forEach((user) => {
     user.socket.write(
@@ -38,4 +38,3 @@ export const positionUpdateHandler = (socket, payload) => {
     );
   });
 };
-

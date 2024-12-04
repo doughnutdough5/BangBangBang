@@ -16,8 +16,10 @@ class User {
     this.characterData = new CharacterData();
 
     this.position = new Position();
+    this.lastUpdateTime = Date.now();
     this.roomId = null;
     this.maxHp = null;
+    
 
     this.maxBbangCount = 0;
     this.damage = 1;
