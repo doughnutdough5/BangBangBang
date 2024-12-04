@@ -7,17 +7,6 @@ import userUpdateNotification from '../../utils/notification/userUpdate.notifica
 import { createResponse } from '../../utils/response/createResponse.js';
 import getCardHandlerByCardType from './index.js';
 
-//캐릭터 정보
-// 빨강이 (CHA00001) 하루에 원하는만큼 빵야!를 사용할 수 있다. // 캐릭터 데이터 설정할 때 BBangCount 추가 설정
-// 상어군 (CHA00003) 빵야!를 막기 위해 쉴드 2개가 필요함. //
-// 말랑이 (CHA00005) 생명력을 1 잃을 때마다 카드 한장을 획득한다. //
-// 개굴군 (CHA00007) 표적이 될 때 25% 확률로 공격을 막는다. //
-// 핑크군 (CHA00008) 남은 카드가 없으면 새로 카드를 한장 받는다. //
-// 물안경군 (CHA00009) 추가로 두명의 위치가 미니맵에 표시 됨 (최대 4명) - 클라
-// 가면군 (CHA00010) 다른 사람이 사망 시 장비중인 카드 포함 모든 카드를 손에 가져온다. //
-// 공룡이 (CHA00012) 다른 유저에게서 미니맵 상 위치를 감춤 - 클라
-// 핑크슬라임 (CHA00013) 피격 시 가해자의 카드를 한장 가져옴. //
-
 export const useCardHandler = (socket, payload) => {
   try {
     const useCardType = payload.useCardRequest.cardType; //사용 카드

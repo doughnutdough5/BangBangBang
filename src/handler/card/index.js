@@ -1,4 +1,3 @@
-// CardHandler 맵핑 해둘 곳
 import { bbangCardHandler } from './normal/bbangCard.handler.js';
 import { bigBbangCardHandler } from './normal/bigBbangCard.handler.js';
 import { call119CardHandler } from './normal/call119Card.handler.js';

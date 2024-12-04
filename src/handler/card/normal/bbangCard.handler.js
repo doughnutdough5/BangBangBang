@@ -52,7 +52,6 @@ const deathMatchBbangHandler = (cardUsingUser, targetUser, currentGame) => {
 const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
   const currentGameUsers = currentGame.users;
 
-  // 여기서부터 빵야 사용 로직
   // 빵야 카운트 증가
   cardUsingUser.increaseBbangCount();
   const autoSheildSuccess = autoShieldCheck(targetUser, currentGame);
@@ -83,7 +82,7 @@ const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
 
     if (cardUsingUser.characterData.characterType === Packets.CharacterType.SHARK && isLaserUser) {
       const needShield = 3;
-      needShieldCheck(cardUsingUser, targetUser, currentGame, needShield); // 3
+      needShieldCheck(cardUsingUser, targetUser, currentGame, needShield);
     } else if (
       cardUsingUser.characterData.characterType === Packets.CharacterType.SHARK ||
       isLaserUser
