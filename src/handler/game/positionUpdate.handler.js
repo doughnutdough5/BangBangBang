@@ -8,12 +8,11 @@ export const positionUpdateHandler = (socket, payload) => {
   const { x, y } = payload.positionUpdateRequest;
 
   const user = getUserBySocket(socket);
-
   const prevX = user.position.x;
   const prevY = user.position.y;
 
   // Throttling 처리: 250ms 이상 경과해야 함
-  const now = Date.now();
+  const now = Date.now(); 
   if (user.lastUpdateTime && now - user.lastUpdateTime < 250) {
     return;
   }
@@ -30,10 +29,6 @@ export const positionUpdateHandler = (socket, payload) => {
 
   // 범위 내 유저 필터링 및 알림 전송
   const currentGame = findGameById(user.roomId);
-  if (!currentGame) {
-    return;
-  }
-
   const inGameUsers = currentGame.users;
 
   const notificationPayload = positionUpdateNotification(inGameUsers);

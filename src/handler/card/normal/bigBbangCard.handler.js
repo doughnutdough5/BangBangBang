@@ -5,6 +5,7 @@ import {
 } from '../../../constants/stateType.js';
 import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
 
+// TODO: 피 2씩 다는 거 수정해야함.
 export const bigBbangCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   currentGame.users.forEach((user) => {
     if (cardUsingUser.id !== user.id && 0 < user.characterData.hp) {
@@ -17,6 +18,7 @@ export const bigBbangCardHandler = (cardUsingUser, targetUser, currentGame, useC
         userUpdateNotification,
         currentGameUsers: currentGame.users,
       });
+
     }
   });
 };

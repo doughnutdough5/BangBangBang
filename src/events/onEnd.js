@@ -12,22 +12,22 @@ export const onEnd = (socket) => () => {
       //게임 시작 전
       leaveRoomHandler(socket);
     }
-    if (currentGame.state === Packets.RoomStateType.PREPARE) {
+    if (currentGame.state === Packets.RoomStateType.PREPARE){
       //게임 세팅 중
-      setTimeout(() => {
+      setTimeout(()=>{
         user.setHp(0);
         removeUser(socket);
-      }, 5000);
+      },5000)
       return;
     }
     if (currentGame.state === Packets.RoomStateType.INAGAME) {
       //인 게임
       user.setHp(0);
     }
+    
 
     removeUser(socket);
   } catch (e) {
     removeUser(socket);
-    console.error(e);
   }
 };

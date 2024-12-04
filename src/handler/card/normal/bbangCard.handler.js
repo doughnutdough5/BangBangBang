@@ -8,7 +8,7 @@ import {
 import { Packets } from '../../../init/loadProtos.js';
 import { animationNotification } from '../../../utils/notification/animation.notification.js';
 import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
-import { cardEffectNotification } from '../../../utils/notification/cardEffect.notification.js';
+import { cardEffectNotification } from '../../../utils/notification/cardEffect.notification.js'
 
 export const bbangCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
   if (
@@ -51,6 +51,16 @@ const deathMatchBbangHandler = (cardUsingUser, targetUser, currentGame) => {
 
 const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
   const currentGameUsers = currentGame.users;
+  // if (!cardUsingUser.canUseBbang()) {
+  //   // 빵야 실패
+  //   const errorResponse = {
+  //     useCardResponse: {
+  //       success: false,
+  //       failCode: Packets.GlobalFailCode.ALREADY_USED_BBANG,
+  //     },
+  //   };
+  //   return errorResponse;
+  // }
 
   // 여기서부터 빵야 사용 로직
   // 빵야 카운트 증가
@@ -92,6 +102,7 @@ const normalBbangHandler = (cardUsingUser, targetUser, currentGame) => {
       needShieldCheck(cardUsingUser, targetUser, currentGame, needShield); // 2
     }
   }
+
 };
 
 //캐릭터 특성 - 개굴군, 장비 특성 - 자동 방어

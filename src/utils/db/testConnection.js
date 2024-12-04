@@ -6,7 +6,7 @@ const testDBConnection = async () => {
     console.log(`테스트 쿼리 결과: ${rows[0].solution}`);
   } catch (err) {
     console.error(`테스트 쿼리 실행 오류: ${err}`);
-    process.exit(1);
+    // process.exit(1);
   }
 };
 
