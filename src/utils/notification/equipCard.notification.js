@@ -1,12 +1,16 @@
 const equipCardNotification = (cardType, cardUsingUserId) => {
-  const responsePayload = {
-    equipCardNotification: {
-      cardType: cardType,
-      userId: cardUsingUserId,
-    },
-  };
+  try {
+    const responsePayload = {
+      equipCardNotification: {
+        cardType: cardType,
+        userId: cardUsingUserId,
+      },
+    };
 
-  return responsePayload;
+    return responsePayload;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export default equipCardNotification;

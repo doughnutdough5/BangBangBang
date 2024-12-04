@@ -28,5 +28,6 @@ export const onEnd = (socket) => () => {
     removeUser(socket);
   } catch (e) {
     removeUser(socket);
+    console.error(e);
   }
 };
