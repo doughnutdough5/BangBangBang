@@ -1,5 +1,4 @@
 import { PACKET_TYPE } from '../../constants/header.js';
-import { Packets } from '../../init/loadProtos.js';
 import { findGameById } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import positionUpdateNotification from '../../utils/notification/positionUpdate.notification.js';

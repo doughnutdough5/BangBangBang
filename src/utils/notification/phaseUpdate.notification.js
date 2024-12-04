@@ -3,7 +3,6 @@ import { getStateContained, getStateNormal } from '../../constants/stateType.js'
 import { characterPositions } from '../../init/loadPositions.js';
 import { Packets } from '../../init/loadProtos.js';
 import { animationNotification } from './animation.notification.js';
-import userUpdateNotification from './userUpdate.notification.js';
 
 export const phaseUpdateNotification = (game) => {
   // 낮인 경우만 위치가 다시 셔플돼서 updatePosition

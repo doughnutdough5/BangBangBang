@@ -5,7 +5,7 @@ import { findUserById, getUserBySocket } from '../../sessions/user.session.js';
 import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
 import warningNotification from '../../utils/notification/warning.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import { bombCardHandler } from '../card/bombCard.handler.js';
+import { bombCardHandler } from '../card/debuffs/bombCard.handler.js';
 
 export const passDebuffHandler = (socket, payload) => {
   const passer = getUserBySocket(socket);

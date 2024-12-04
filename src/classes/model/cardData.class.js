@@ -1,4 +1,3 @@
-import { Packets } from "../../init/loadProtos.js";
 
 class CardData {
     constructor(type, count) {

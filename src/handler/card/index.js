@@ -20,7 +20,7 @@ import { autoRifleCardHandler } from './weapons/autoRifleCard.handler.js';
 import { sniperGunCardHandler } from './weapons/sniperGunCard.handler.js';
 import { laserPointerHandler } from './equips/laserPointer.handler.js';
 import { radarHandler } from './equips/radarCard.handler.js';
-import { autoShieldHandler } from './equips/equips/autoShieldCard.handler.js';
+import { autoShieldHandler } from './equips/autoShieldCard.handler.js';
 import { stealthSuitHandler } from './equips/stealthSuitCard.handler.js';
 
 const cardHandlers = {

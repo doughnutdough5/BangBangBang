@@ -1,6 +1,5 @@
 import { config } from '../../config/config.js';
 import { Packets } from '../../init/loadProtos.js';
-import getPacketTypeName from '../getPacketTypeName.js';
 
 const createHeader = (payloadOneofCase, sequence, payloadLength) => {
   const payloadOneofCaseBuffer = Buffer.alloc(config.header.PAYLOAD_ONEOF_CASE_SIZE);
