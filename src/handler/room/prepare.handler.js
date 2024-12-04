@@ -5,11 +5,13 @@ import { findGameById } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import { gamePrepareNotification } from '../../utils/notification/gamePrepare.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import shuffle from '../../utils/shuffle.js';
+import shuffle, { shuffledCharacter, shuffledRoleType } from '../../utils/shuffle.js';
 
 export const gamePrepareHandler = (socket, payload) => {
   try {
     const ownerUser = getUserBySocket(socket);
+    const inGameUsers = currentGame.users;
+
     // 방장 존재 여부
     if (!ownerUser) {
       const errorResponse = {
@@ -37,90 +39,15 @@ export const gamePrepareHandler = (socket, payload) => {
 
     currentGame.gameStart();
 
-    const inGameUsers = currentGame.users;
-
-    // 캐릭터 셔플
-    const characterList = [
-      { type: Packets.CharacterType.RED },
-      { type: Packets.CharacterType.SHARK },
-      { type: Packets.CharacterType.MALANG },
-      { type: Packets.CharacterType.FROGGY },
-      { type: Packets.CharacterType.PINK },
-      { type: Packets.CharacterType.SWIM_GLASSES },
-      { type: Packets.CharacterType.MASK },
-      { type: Packets.CharacterType.DINOSAUR },
-      { type: Packets.CharacterType.PINK_SLIME },
-    ];
-
-    const shuffledCharacter = shuffle(characterList).splice(0, inGameUsers.length);
-    inGameUsers.forEach((user, i) => {
-      user.setCharacter(shuffledCharacter[i].type);
-    });
-
-    // 1.RoleTypes[inGameUsers.length]
-    // 2.셔플(RoleType)
-    // 3.플레이어한테 부여 array.shift
-    const roleTypes = {
-      //타겟 - 보안관, 보디가드 - 부관, 히트맨 - 무법자, 싸이코패스 - 배신자
-      2: [Packets.RoleType.TARGET, Packets.RoleType.HITMAN],
-      3: [Packets.RoleType.TARGET, Packets.RoleType.HITMAN, Packets.RoleType.PSYCHOPATH],
-      4: [
-        Packets.RoleType.TARGET,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.PSYCHOPATH,
-      ],
-      5: [
-        Packets.RoleType.TARGET,
-        Packets.RoleType.BODYGUARD,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.PSYCHOPATH,
-      ],
-      6: [
-        Packets.RoleType.TARGET,
-        Packets.RoleType.BODYGUARD,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.PSYCHOPATH,
-      ],
-      7: [
-        Packets.RoleType.TARGET,
-        Packets.RoleType.BODYGUARD,
-        Packets.RoleType.BODYGUARD,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.HITMAN,
-        Packets.RoleType.PSYCHOPATH,
-      ],
-    };
-
-    // roleType 배분
-    const roleTypeClone = roleTypes[inGameUsers.length];
-    const shuffledRoleType = shuffle(roleTypeClone);
-    inGameUsers.forEach((user, i) => {
-      user.setCharacterRoleType(shuffledRoleType[i]);
-      if (user.characterData.roleType === Packets.RoleType.TARGET) {
-        user.increaseHp();
-      }
-    });
+    shuffledCharacter(inGameUsers);
+    shuffledRoleType(inGameUsers);
 
     const deck = shuffle(cardDeck);
 
     // 카드 배분
     inGameUsers.forEach((user) => {
-      // 1. 임시로 사람별 덱 구성
-      const tmp = [];
-
-      for (let i = 0; i < user.characterData.hp; i++) {
-        const card = deck.shift();
-        tmp.push(card);
-        user.addHandCard(card); // card === type
-      }
-      // 2. 한 번에 추가
-      const result = transformData(tmp);
-      user.characterData.handCards = result;
+      const gainCards = deck.splice(0, user.characterData.hp);
+      gainCards.forEach((card) => user.addHandCard(card));
       // WARN: Test code
       // user.characterData.handCards = [
       // { type: Packets.CardType.BIG_BBANG, count: 2 },
