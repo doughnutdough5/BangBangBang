@@ -11,6 +11,18 @@ export const reactionHandler = (socket, payload) => {
   const game = findGameById(user.roomId);
   const targetUser = findUserById(user.characterData.stateInfo.stateTargetUserId);
 
+  if (user.characterData.stateInfo.state === Packets.CharacterStateType.NONE_CHARACTER_STATE) {
+    const errorResponse = {
+      reactionResponse: {
+        success: false,
+        failCode: Packets.GlobalFailCode.INVALID_REQUEST,
+      },
+    };
+  
+    socket.write(createResponse(PACKET_TYPE.REACTION_RESPONSE, 0, errorResponse));
+    return;
+  }
+
   if (user.characterData.stateInfo.state === Packets.CharacterStateType.BIG_BBANG_TARGET) {
     game.events.cancelEvent(user.id, 'finishShieldWaitOnBigBbang');
   }
