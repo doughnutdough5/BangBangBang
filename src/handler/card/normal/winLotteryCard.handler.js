@@ -1,6 +1,4 @@
 export const winLotteryCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
-  for (let i = 0; i < 3; i++) {
-    const gainCard = currentGame.deck.shift();
-    cardUsingUser.addHandCard(gainCard);
-  }
+  const gainCards = currentGame.deck.splice(0, 3);
+  gainCards.forEach((card) => cardUsingUser.addHandCard(card));
 };
