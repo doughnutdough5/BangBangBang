@@ -35,7 +35,14 @@ jobs:
           envs: GITHUB_SHA
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            CONTAINER_NAME=bang
+            if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
+              echo "Stopping and removing existing container: $CONTAINER_NAME"
+              sudo docker stop $CONTAINER_NAME
+              sudo docker rm $CONTAINER_NAME
+            fi
+
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/bangbangbang
-            sudo docker run -d --env-file ${{ secrets.ENV_PATH }} -p 5555:5555 ${{ secrets.DOCKER_USERNAME }}/bangbangbang
+            sudo docker run --name $CONTAINER_NAME -d --env-file ${{ secrets.ENV_PATH }} -p 5555:5555 ${{ secrets.DOCKER_USERNAME }}/bangbangbang
             sudo docker image prune -f
             sudo docker container prune -f
