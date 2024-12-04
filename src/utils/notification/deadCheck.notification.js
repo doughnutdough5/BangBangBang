@@ -2,11 +2,14 @@ import { Packets } from '../../init/loadProtos.js';
 import userUpdateNotification from './userUpdate.notification.js';
 
 export const deadCheck = (game) => {
-  const deathUser = game.users.find((user) => user.characterData.hp === 0);
-  if (deathUser && deathUser.characterData.alive) {
-
-    deathUser.characterData.alive = false;
-    characterTypeGetCard(game, deathUser);
+  try {
+    const deathUser = game.users.find((user) => user.characterData.hp === 0);
+    if (deathUser && deathUser.characterData.alive) {
+      deathUser.characterData.alive = false;
+      characterTypeGetCard(game, deathUser);
+    }
+  } catch (e) {
+    console.error(e);
   }
 };
 
@@ -15,6 +18,11 @@ const characterTypeGetCard = (game, deathUser) => {
   const maskUser = game.users.find(
     (user) => user.characterData.characterType === Packets.CharacterType.MASK,
   );
+
+  if (!maskUser) {
+    userUpdateNotification(game.users);
+    return;
+  }
   const deathUserHandCards = deathUser.characterData.handCards;
   const handCardsLength = deathUserHandCards.length;
   const deathUserEquips = deathUser.characterData.equips;

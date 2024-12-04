@@ -1,6 +1,5 @@
 import { Packets } from '../../init/loadProtos.js';
 import CharacterStateInfoData from './characterStateInfoData.class.js';
-// import User from './user.class.js';
 
 class CharacterData {
   constructor() {
@@ -21,4 +20,3 @@ class CharacterData {
 }
 
 export default CharacterData;
-
