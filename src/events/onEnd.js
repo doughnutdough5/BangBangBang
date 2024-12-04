@@ -8,6 +8,11 @@ export const onEnd = (socket) => () => {
     console.log(`Client disconnected from ${socket.remoteAddress}:${socket.remotePort}`);
     const user = getUserBySocket(socket);
     const currentGame = findGameById(user.roomId);
+    if (!currentGame) {
+      removeUser(socket);
+      return;
+    }
+
     if (currentGame.state === Packets.RoomStateType.WAIT) {
       //게임 시작 전
       leaveRoomHandler(socket);
