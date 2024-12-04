@@ -50,7 +50,7 @@ export const reactionHandler = (socket, payload) => {
   if (targetUser) {
     targetUser.setCharacterState(getStateNormal());
   }
-  userUpdateNotification(game.users); //updateUserData
+  userUpdateNotification(game.users);
 
   const responsePayload = {
     reactionResponse: {

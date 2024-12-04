@@ -38,6 +38,10 @@ class Game {
     this.events = null;
   }
 
+  getAliveUsers() {
+    return this.users.filter((user) => user.isAlive());
+  }
+
   returnCardToDeck(cardType) {
     this.deck.push(cardType);
   }
