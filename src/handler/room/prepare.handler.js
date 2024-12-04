@@ -5,12 +5,11 @@ import { findGameById } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import { gamePrepareNotification } from '../../utils/notification/gamePrepare.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
-import shuffle, { shuffledCharacter, shuffledRoleType } from '../../utils/shuffle.js';
+import { shuffle, shuffledCharacter, shuffledRoleType } from '../../utils/shuffle.js';
 
 export const gamePrepareHandler = (socket, payload) => {
   try {
     const ownerUser = getUserBySocket(socket);
-    const inGameUsers = currentGame.users;
 
     // 방장 존재 여부
     if (!ownerUser) {
@@ -26,6 +25,7 @@ export const gamePrepareHandler = (socket, payload) => {
 
     // 게임 존재 여부
     const currentGame = findGameById(ownerUser.roomId);
+    const inGameUsers = currentGame.users;
     if (!currentGame) {
       const errorResponse = {
         gamePrepareResponse: {
@@ -95,22 +95,4 @@ export const gamePrepareHandler = (socket, payload) => {
   } catch (err) {
     console.error(err);
   }
-};
-
-const transformData = (data) => {
-  const typeCountMap = new Map();
-
-  // 각 타입의 개수를 Map에 집계
-  data.forEach((type) => {
-    if (typeCountMap.has(type)) {
-      typeCountMap.set(type, typeCountMap.get(type) + 1);
-    } else {
-      typeCountMap.set(type, 1);
-    }
-  });
-
-  // Map 데이터를 { type, count } 형태의 객체 배열로 변환
-  const result = Array.from(typeCountMap, ([type, count]) => ({ type, count }));
-
-  return result;
 };
