@@ -18,7 +18,7 @@ export const reactionHandler = (socket, payload) => {
         failCode: Packets.GlobalFailCode.INVALID_REQUEST,
       },
     };
-
+  
     socket.write(createResponse(PACKET_TYPE.REACTION_RESPONSE, 0, errorResponse));
     return;
   }
@@ -42,7 +42,9 @@ export const reactionHandler = (socket, payload) => {
     user.decreaseHp(lostHp);
   } else {
     //빵야 예외인 경우
+    console.log(`리액션/게릴라 발동 전 hp : ${user.characterData.hp}`)
     user.decreaseHp(lostHp);
+    console.log(`리액션/게릴라 발동 후 hp : ${user.characterData.hp}`)
   }
   characterTypeGetCard(user, targetUser, game, lostHp);
 
@@ -65,8 +67,10 @@ export const reactionHandler = (socket, payload) => {
 //캐릭터 특성 - 말랑이, 핑크슬라임
 const characterTypeGetCard = (user, targetUser, game, lostHp) => {
   if (user.characterData.characterType === Packets.CharacterType.MALANG) {
-    const gainCards = game.deck.splice(0, lostHp);
-    gainCards.forEach((card) => user.addHandCard(card));
+    for (let i = 0; i < lostHp; i++) {
+      const card = game.deck.shift();
+      user.addHandCard(card);
+    }
   }
 
   if (user.characterData.characterType === Packets.CharacterType.PINK_SLIME) {

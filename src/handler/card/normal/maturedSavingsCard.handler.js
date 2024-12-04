@@ -1,4 +1,6 @@
 export const maturedSavingsCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
-  const gainCards = currentGame.deck.splice(0, 2);
-  gainCards.forEach((card) => cardUsingUser.addHandCard(card));
+  for (let i = 0; i < 2; i++) {
+    const gainCard = currentGame.deck.shift();
+    cardUsingUser.addHandCard(gainCard);
+  }
 };
