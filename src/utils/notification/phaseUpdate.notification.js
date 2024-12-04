@@ -2,15 +2,15 @@ import phaseTime from '../../constants/phaseTime.js';
 import { getStateContained, getStateNormal } from '../../constants/stateType.js';
 import { characterPositions } from '../../init/loadPositions.js';
 import { Packets } from '../../init/loadProtos.js';
-import { prisonLogic, satelliteLogic } from '../debuff.js';
 import { animationNotification } from './animation.notification.js';
 
 export const phaseUpdateNotification = (game) => {
   // 낮인 경우만 위치가 다시 셔플돼서 updatePosition
   // 밤에는 현재 위치
   if (game.currentPhase === Packets.PhaseType.DAY) {
-    const inGameUsers = game.users;
 
+    const inGameUsers = game.users;
+    
     // 랜덤 위치 뽑기
     const selectedPositions = new Set();
     while (true) {
@@ -48,15 +48,63 @@ export const phaseUpdateNotification = (game) => {
 
     // 빵야 카운트 리셋, 카드 두 개씩 주기
     inGameUsers.forEach((user) => {
-      const gainCards = deck.splice(0, 2);
-      gainCards.forEach((card) => user.addHandCard(card));
+      for (let i = 0; i < 2; i++) {
+        const card = game.deck.shift();
+        user.addHandCard(card);
+      }
+
       user.resetBbangCount();
     });
 
-    // 감옥 로직
-    prisonLogic(inGameUsers);
-    // 위성 로직
-    satelliteLogic(inGameUsers);
+    // 페이즈 전환시 25퍼 확률로 감옥가는 로직
+    const prisonUsers = inGameUsers.filter((user) =>
+      user.characterData.debuffs.includes(Packets.CardType.CONTAINMENT_UNIT),
+    );
+
+    prisonUsers.forEach((user) => {
+      if (user.characterData.stateInfo.state === Packets.CharacterStateType.CONTAINED) {
+        user.setCharacterState(getStateNormal());
+        user.characterData.debuffs = user.characterData.debuffs.filter(
+          (debuff) => debuff !== Packets.CardType.CONTAINMENT_UNIT,
+        );
+      } else if (!(Math.random() < 0.25)) {
+        user.setCharacterState(getStateContained());
+      } else return;
+    });
+
+    // 위성 타겟 로직
+    const satelliteUser = inGameUsers.find((user) =>
+      user.characterData.debuffs.includes(Packets.CardType.SATELLITE_TARGET),
+    );
+
+    if (satelliteUser) {
+      // 3퍼센트 확률로 hp 3 감소
+      if (Math.random() < 0.03) {
+        satelliteUser.decreaseHp(3);
+        // 현재 유저에서 디버프 제거
+        satelliteUser.characterData.debuffs = satelliteUser.characterData.debuffs.filter(
+          (debuff) => debuff !== Packets.CardType.SATELLITE_TARGET,
+        );
+        animationNotification(
+          inGameUsers,
+          satelliteUser,
+          Packets.AnimationType.SATELLITE_TARGET_ANIMATION,
+        );
+      } else {
+        // 3% 확률 실패 시 디버프를 다음 유저에게 이동
+        const currentIndex = inGameUsers.indexOf(satelliteUser);
+        const nextIndex = (currentIndex + 1) % inGameUsers.length;
+        const nextUser = inGameUsers[nextIndex];
+
+        // 현재 유저에서 디버프 제거
+        satelliteUser.characterData.debuffs = satelliteUser.characterData.debuffs.filter(
+          (debuff) => debuff !== Packets.CardType.SATELLITE_TARGET,
+        );
+
+        // 다음 유저에게 디버프 추가
+        nextUser.characterData.debuffs.push(Packets.CardType.SATELLITE_TARGET);
+      }
+    }
   }
 
   const responsePayload = {
