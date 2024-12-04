@@ -10,6 +10,11 @@ export const phaseUpdateNotification = (game) => {
   if (game.currentPhase === Packets.PhaseType.DAY) {
 
     const inGameUsers = game.users;
+    
+
+    inGameUsers.forEach((user) => {
+      user.setCharacterState(getStateNormal())
+    })
     // 랜덤 위치 뽑기
     const selectedPositions = new Set();
     while (true) {
@@ -104,6 +109,13 @@ export const phaseUpdateNotification = (game) => {
         nextUser.characterData.debuffs.push(Packets.CardType.SATELLITE_TARGET);
       }
     }
+  } else {
+    // 밤 로직
+    const inGameUsers = game.users;
+
+    inGameUsers.forEach((user) => {
+      user.setCharacterState(getStateContained())
+    })
   }
 
   const responsePayload = {
