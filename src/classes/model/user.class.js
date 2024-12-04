@@ -228,41 +228,58 @@ class User {
   }
 
   addHandCard(addCard) {
-    const index = this.characterData.handCards.findIndex((card) => card.type === addCard);
-
-    // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
-    // 존재하지 않으면 addHandCard({ type: newType, count: 1})
-    if (index !== -1) {
-      const cnt = this.characterData.handCards[index].count++;
-    } else {
-      const tmp = {
-        type: addCard,
-        count: 1,
-      };
-      this.characterData.handCards.push(tmp);
-    }
+    this.characterData.handCards.set(addCard, (this.characterData.handCards.get(addCard) || 0) + 1);
     this.increaseHandCardsCount();
+    // const index = this.characterData.handCards.findIndex((card) => card.type === addCard);
+    //
+    // // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
+    // // 존재하지 않으면 addHandCard({ type: newType, count: 1})
+    // if (index !== -1) {
+    //   const cnt = this.characterData.handCards[index].count++;
+    // } else {
+    //   const tmp = {
+    //     type: addCard,
+    //     count: 1,
+    //   };
+    //   this.characterData.handCards.push(tmp);
+    // }
+  }
+
+  // 있으면 해당 카드의 count를 없으면 0를 반환함
+  findCard(cardType) {
+    return this.characterData.handCards.get(cardType) || 0;
   }
 
   selectRandomHandCard() {
-    const randomIndex = Math.floor(Math.random() * this.characterData.handCards.length);
-    return this.characterData.handCards[randomIndex].type;
+    const handCards = this.getHandCardsToArray();
+    const randomIndex = Math.floor(Math.random() * handCards.length);
+    // return handCards[randomIndex]; // [cardType, count] 형태의 배열 반환
+    return handCards[randomIndex].type; // cardType
+
+    // const randomIndex = Math.floor(Math.random() * this.characterData.handCards.length);
+    // return this.characterData.handCards[randomIndex].type;
   }
 
   removeHandCard(usingCard) {
-    const index = this.characterData.handCards.findIndex((card) => card.type === usingCard);
-
-    // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
-    // 존재하지 않으면 addHandCard({ type: newType, count: 1})
-    // count-- => count === 0 객체를 아예 삭제
-    if (index !== -1) {
-      const cnt = --this.characterData.handCards[index].count;
-      this.decreaseHandCardsCount();
-      if (cnt === 0) {
-        // 남은 카드 없음
-        this.characterData.handCards.splice(index, 1);
-      }
+    const count = this.characterData.handCards.get(usingCard);
+    if (count === 1) {
+      this.characterData.handCards.delete(usingCard);
+    } else {
+      this.characterData.handCards.set(usingCard, count - 1);
     }
+
+    this.decreaseHandCardsCount();
+    // const index = this.characterData.handCards.findIndex((card) => card.type === usingCard);
+    //
+    // // count-- => count === 0 객체를 아예 삭제
+    // if (index !== -1) {
+    //   const cnt = --this.characterData.handCards[index].count;
+    //   this.decreaseHandCardsCount();
+    //   if (cnt === 0) {
+    //     // 남은 카드 없음
+    //     this.characterData.handCards.splice(index, 1);
+    //   }
+    // }
   }
 
   removeEquipCard(equip) {
@@ -281,19 +298,15 @@ class User {
   }
 
   hasShieldCard() {
-    const shieldCard = this.characterData.handCards.find((card) => {
-      return card.type === Packets.CardType.SHIELD;
-    });
+    const shieldCard = this.characterData.handCards.get(Packets.CardType.SHIELD);
 
     return shieldCard ? true : false;
   }
 
   hasBbangCard() {
-    const shieldCard = this.characterData.handCards.find((card) => {
-      return card.type === Packets.CardType.BBANG;
-    });
+    const bbangCard = this.characterData.handCards.get(Packets.CardType.BBANG);
 
-    return shieldCard ? true : false;
+    return bbangCard ? true : false;
   }
 
   // 이거 안쓰지 않나
@@ -337,6 +350,15 @@ class User {
     this.characterData.stateInfo.stateTargetUserId = targetUserId;
   }
 
+  getHandCardsToArray() {
+    const result = Array.from(this.characterData.handCards.entries(), ([key, value]) => ({
+      type: key,
+      count: value,
+    }));
+    console.log(this.nickname, result);
+    return result;
+  }
+
   makeRawObject() {
     return {
       id: this.id,
@@ -355,7 +377,7 @@ class User {
         },
         equips: this.characterData.equips,
         debuffs: this.characterData.debuffs,
-        handCards: this.characterData.handCards,
+        handCards: this.getHandCardsToArray(),
         bbangCount: this.characterData.bbangCount,
         handCardsCount: this.characterData.handCardsCount,
       },
