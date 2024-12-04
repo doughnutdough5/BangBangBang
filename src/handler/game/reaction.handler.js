@@ -18,7 +18,7 @@ export const reactionHandler = (socket, payload) => {
         failCode: Packets.GlobalFailCode.INVALID_REQUEST,
       },
     };
-  
+
     socket.write(createResponse(PACKET_TYPE.REACTION_RESPONSE, 0, errorResponse));
     return;
   }
@@ -42,9 +42,9 @@ export const reactionHandler = (socket, payload) => {
     user.decreaseHp(lostHp);
   } else {
     //빵야 예외인 경우
-    console.log(`리액션/게릴라 발동 전 hp : ${user.characterData.hp}`)
+    console.log(`리액션/게릴라 발동 전 hp : ${user.characterData.hp}`);
     user.decreaseHp(lostHp);
-    console.log(`리액션/게릴라 발동 후 hp : ${user.characterData.hp}`)
+    console.log(`리액션/게릴라 발동 후 hp : ${user.characterData.hp}`);
   }
   characterTypeGetCard(user, targetUser, game, lostHp);
 
@@ -52,7 +52,7 @@ export const reactionHandler = (socket, payload) => {
   if (targetUser) {
     targetUser.setCharacterState(getStateNormal());
   }
-  userUpdateNotification(game.users); //updateUserData
+  userUpdateNotification(game.users);
 
   const responsePayload = {
     reactionResponse: {
