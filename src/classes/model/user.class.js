@@ -183,6 +183,9 @@ class User {
 
   decreaseHp(damage = 1) {
     this.characterData.hp -= damage;
+    if (this.characterData.hp < 0){
+      this.characterData.hp = 0;
+    }
   }
 
   setWeapon(weapon) {
