@@ -24,9 +24,7 @@ class EventManager {
       const { user, cardUsingUser, stateNormal, userUpdateNotification, currentGameUsers } = params;
       user.setCharacterState(stateNormal);
       cardUsingUser.setCharacterState(stateNormal);
-      console.log(`event/난사 발동 전 hp : ${user.characterData.hp}`)
       user.decreaseHp(1);
-      console.log(`event/난사 발동 후 hp : ${user.characterData.hp}`)
       userUpdateNotification(currentGameUsers);
     });
 
@@ -43,9 +41,7 @@ class EventManager {
       const { user, cardUsingUser, stateNormal, userUpdateNotification, currentGameUsers } = params;
       user.setCharacterState(stateNormal);
       cardUsingUser.setCharacterState(stateNormal);
-      console.log(`event/게릴라 발동 전 hp : ${user.characterData.hp}`)
       user.decreaseHp(1);
-      console.log(`event/게릴라 발동 후 hp : ${user.characterData.hp}`)
       userUpdateNotification(currentGameUsers);
     });
 

@@ -1,9 +1,5 @@
 import { PACKET_TYPE } from '../../constants/header.js';
-import {
-  findGameById,
-  getAllGameSessions,
-  removeGameSession,
-} from '../../sessions/game.session.js';
+import { findGameById, removeGameSession } from '../../sessions/game.session.js';
 import { getUserBySocket } from '../../sessions/user.session.js';
 import leaveRoomNotification from '../../utils/notification/leaveRoom.nofitication.js';
 import { createResponse } from '../../utils/response/createResponse.js';
