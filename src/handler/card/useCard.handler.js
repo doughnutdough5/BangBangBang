@@ -35,6 +35,8 @@ export const useCardHandler = (socket, payload) => {
     };
   
     socket.write(createResponse(PACKET_TYPE.USE_CARD_RESPONSE, 0, errorPayload));
+    userUpdateNotification(currentGame.users)
+    
     return;
   }
 

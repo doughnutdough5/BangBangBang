@@ -8,6 +8,7 @@ export const positionUpdateHandler = (socket, payload) => {
   const { x, y } = payload.positionUpdateRequest;
 
   const user = getUserBySocket(socket);
+
   const prevX = user.position.x;
   const prevY = user.position.y;
 
@@ -29,6 +30,10 @@ export const positionUpdateHandler = (socket, payload) => {
 
   // 범위 내 유저 필터링 및 알림 전송
   const currentGame = findGameById(user.roomId);
+  if (!currentGame) {
+    return;
+  }
+
   const inGameUsers = currentGame.users;
 
   const notificationPayload = positionUpdateNotification(inGameUsers);

@@ -4,7 +4,6 @@ import userUpdateNotification from './userUpdate.notification.js';
 export const deadCheck = (game) => {
   const deathUser = game.users.find((user) => user.characterData.hp === 0);
   if (deathUser && deathUser.characterData.alive) {
-
     deathUser.characterData.alive = false;
     characterTypeGetCard(game, deathUser);
   }
@@ -15,6 +14,10 @@ const characterTypeGetCard = (game, deathUser) => {
   const maskUser = game.users.find(
     (user) => user.characterData.characterType === Packets.CharacterType.MASK,
   );
+
+  if (!maskUser) {
+    return;
+  }
   const deathUserHandCards = deathUser.characterData.handCards;
   const handCardsLength = deathUserHandCards.length;
   const deathUserEquips = deathUser.characterData.equips;
