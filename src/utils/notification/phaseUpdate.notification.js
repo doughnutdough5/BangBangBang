@@ -36,7 +36,6 @@ export const phaseUpdateNotification = (game) => {
           for (let i = 0; i < userOverHandedCount; i++) {
             // 오버한 갯수만큼 랜덤하게 손패 삭제
             const randomCard = user.selectRandomHandCard();
-            console.log(randomCard, '선택됨');
             user.removeHandCard(randomCard); // <- randomCard 값이 안읽히는 것 같음
           }
         }

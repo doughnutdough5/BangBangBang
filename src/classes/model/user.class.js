@@ -185,7 +185,6 @@ class User {
   }
 
   decreaseHp(damage = 1) {
-    console.log(`decreaseHp의 damage: ${damage}`);
     this.characterData.hp -= damage;
     if (this.characterData.hp < 0) {
       this.characterData.hp = 0;
@@ -230,19 +229,6 @@ class User {
   addHandCard(addCard) {
     this.characterData.handCards.set(addCard, (this.characterData.handCards.get(addCard) || 0) + 1);
     this.increaseHandCardsCount();
-    // const index = this.characterData.handCards.findIndex((card) => card.type === addCard);
-    //
-    // // { type: enum, count: 1} enum값이 handCards에 존재하면 count++
-    // // 존재하지 않으면 addHandCard({ type: newType, count: 1})
-    // if (index !== -1) {
-    //   const cnt = this.characterData.handCards[index].count++;
-    // } else {
-    //   const tmp = {
-    //     type: addCard,
-    //     count: 1,
-    //   };
-    //   this.characterData.handCards.push(tmp);
-    // }
   }
 
   // 있으면 해당 카드의 count를 없으면 0를 반환함
@@ -253,11 +239,7 @@ class User {
   selectRandomHandCard() {
     const handCards = this.getHandCardsToArray();
     const randomIndex = Math.floor(Math.random() * handCards.length);
-    // return handCards[randomIndex]; // [cardType, count] 형태의 배열 반환
     return handCards[randomIndex].type; // cardType
-
-    // const randomIndex = Math.floor(Math.random() * this.characterData.handCards.length);
-    // return this.characterData.handCards[randomIndex].type;
   }
 
   removeHandCard(usingCard) {
@@ -269,17 +251,6 @@ class User {
     }
 
     this.decreaseHandCardsCount();
-    // const index = this.characterData.handCards.findIndex((card) => card.type === usingCard);
-    //
-    // // count-- => count === 0 객체를 아예 삭제
-    // if (index !== -1) {
-    //   const cnt = --this.characterData.handCards[index].count;
-    //   this.decreaseHandCardsCount();
-    //   if (cnt === 0) {
-    //     // 남은 카드 없음
-    //     this.characterData.handCards.splice(index, 1);
-    //   }
-    // }
   }
 
   removeEquipCard(equip) {
@@ -355,7 +326,6 @@ class User {
       type: key,
       count: value,
     }));
-    console.log(this.nickname, result);
     return result;
   }
 
