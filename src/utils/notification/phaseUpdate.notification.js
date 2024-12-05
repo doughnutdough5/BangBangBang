@@ -72,6 +72,7 @@ export const phaseUpdateNotification = (game) => {
     }
 
     const time = Date.now() + phaseTime[game.currentPhase];
+    console.log(Date.now());
     const responsePayload = {
       phaseUpdateNotification: {
         phaseType: game.currentPhase,
