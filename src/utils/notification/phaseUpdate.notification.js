@@ -5,11 +5,10 @@ import { prisonLogic, satelliteLogic } from '../debuff.js';
 
 export const phaseUpdateNotification = (game) => {
   try {
+    const inGameUsers = game.getAliveUsers();
     // 낮인 경우만 위치가 다시 셔플돼서 updatePosition
     // 밤에는 현재 위치
     if (game.currentPhase === Packets.PhaseType.DAY) {
-      const inGameUsers = game.getAliveUsers();
-
       // 랜덤 위치 뽑기
       const selectedPositions = new Set();
       while (true) {
@@ -60,7 +59,7 @@ export const phaseUpdateNotification = (game) => {
       phaseUpdateNotification: {
         phaseType: game.currentPhase,
         nextPhaseAt: time,
-        characterPositions: game.users.map((user) => {
+        characterPositions: inGameUsers.map((user) => {
           return { id: user.id, x: user.getX(), y: user.getY() };
         }),
       },
