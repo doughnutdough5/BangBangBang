@@ -23,7 +23,7 @@ const characterTypeGetCard = (game, deathUser) => {
     userUpdateNotification(game.users);
     return;
   }
-  const deathUserHandCards = deathUser.characterData.handCards;
+  const deathUserHandCards = deathUser.getHandCardsToArray();
   const handCardsLength = deathUserHandCards.length;
   const deathUserEquips = deathUser.characterData.equips;
   const equipCardsLength = deathUserEquips.length;
