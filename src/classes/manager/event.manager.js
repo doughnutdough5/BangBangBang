@@ -1,8 +1,4 @@
 import EventEmitter from 'events';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
-import { phaseUpdateNotification } from '../../utils/notification/phaseUpdate.notification.js';
-import { createResponse } from '../../utils/response/createResponse.js';
-import { PACKET_TYPE } from '../../constants/header.js';
 
 class EventManager {
   constructor() {
