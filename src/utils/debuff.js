@@ -16,7 +16,13 @@ export const prisonLogic = (inGameUsers) => {
       );
     } else if (!(Math.random() < 0.25)) {
       user.setCharacterState(getStateContained());
-    } else return;
+      console.log('감옥발동');
+    } else {
+      console.log('감옥 미발동 디버프 삭제');
+      user.characterData.debuffs = user.characterData.debuffs.filter(
+        (debuff) => debuff !== Packets.CardType.CONTAINMENT_UNIT,
+      );
+    }
   });
 };
 
