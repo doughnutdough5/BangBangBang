@@ -39,8 +39,8 @@ class IntervalManager {
   removeInterval(id, eventName) {
     const intervals = this.intervals.get(id);
     if (intervals && intervals.has(eventName)) {
-      clearInterval(intervals.get(type));
-      intervals.delete(type);
+      clearInterval(intervals.get(eventName));
+      intervals.delete(eventName);
       console.log(`[CANCEL EVENT] ${id}: ${eventName} 취소됨.`);
       return;
     }

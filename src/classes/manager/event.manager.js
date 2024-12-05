@@ -60,22 +60,6 @@ class EventManager {
       warningNoti();
       bombTimer();
     });
-
-    this.eventEmitter.on('onChangePhase', (params) => {
-      const { currentGame } = params;
-      const tmp = currentGame.currentPhase;
-      currentGame.currentPhase = currentGame.nextPhase;
-      currentGame.nextPhase = tmp;
-      const responseNotification = phaseUpdateNotification(currentGame);
-      currentGame.users.forEach((user) => {
-        user.socket.write(
-          createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification),
-        );
-      });
-
-      userUpdateNotification(currentGame.users);
-      currentGame.changePhase();
-    });
   }
 
   // 이벤트 예약

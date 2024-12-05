@@ -119,13 +119,14 @@ const autoShieldCheck = (targetUser, currentGame) => {
 
 //캐릭터 특성 - 상어군, 장비 특성 - 레이저
 const needShieldCheck = (cardUsingUser, targetUser, currentGame, needShield) => {
-  const shieldCount = targetUser.characterData.handCards.find((card) => {
-    if (card.type === Packets.CardType.SHIELD) {
-      return card.count;
-    } else {
-      return 0;
-    }
-  });
+  // const shieldCount = targetUser.characterData.handCards.find((card) => {
+  //   if (card.type === Packets.CardType.SHIELD) {
+  //     return card.count;
+  //   } else {
+  //     return 0;
+  //   }
+  // });
+  const shieldCount = targetUser.findCard(Packets.CardType.SHIELD);
 
   if (shieldCount < needShield) {
     targetUser.decreaseHp(cardUsingUser.damage);

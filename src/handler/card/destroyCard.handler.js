@@ -20,9 +20,7 @@ export const destroyCardHandler = (socket, payload) => {
 
   const responsePayload = {
     destroyCardResponse: {
-      handCards: cardDestroyUser.characterData.handCards.map((card) => {
-        return { type: card.type, count: card.count };
-      }),
+      handCards: cardDestroyUser.getHandCardsToArray(),
     },
   };
 

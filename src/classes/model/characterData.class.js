@@ -11,7 +11,7 @@ class CharacterData {
     this.equips = []; // int32
     this.debuffs = []; // int32
     // 가능하면 Map으로 관리하는 것이 좋음. 카드 찾을 때 O(1)과 O(n)의 차이
-    this.handCards = []; // CardData Object
+    this.handCards = new Map(); // CardData Object
     this.bbangCount = 0;
     this.handCardsCount = 0;
     this.alive = true;
