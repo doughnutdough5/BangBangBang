@@ -53,6 +53,7 @@ class Game {
   changePhase() {
     const time = phaseTime[this.currentPhase];
     const currentGame = this;
+
     this.intervalManager.removeInterval(this.id, 'gameChangePhase');
     this.intervalManager.addInterval(
       this.id,
@@ -68,6 +69,7 @@ class Game {
             );
           });
           userUpdateNotification(currentGame.users);
+          currentGame.changePhase();
         } catch (err) {
           console.error(err);
         }
