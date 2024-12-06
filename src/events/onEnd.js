@@ -8,6 +8,9 @@ export const onEnd = (socket) => () => {
     console.log(`Client disconnected from ${socket.remoteAddress}:${socket.remotePort}`);
     const user = getUserBySocket(socket);
     const currentGame = findGameById(user.roomId);
+    if (!user){
+      return;
+    }
     if (!currentGame) {
       removeUser(socket);
       return;
