@@ -53,24 +53,23 @@ class Game {
 
   changePhase() {
     const time = phaseTime[this.currentPhase];
-    const currentGame = this;
 
     this.intervalManager.removeInterval(this.id, 'gameChangePhase');
     this.intervalManager.addInterval(
       this.id,
       () => {
         try {
-          const tmp = currentGame.currentPhase;
-          currentGame.currentPhase = currentGame.nextPhase;
-          currentGame.nextPhase = tmp;
-          const responseNotification = phaseUpdateNotification(currentGame);
-          currentGame.users.forEach((user) => {
+          const tmp = this.currentPhase;
+          this.currentPhase = this.nextPhase;
+          this.nextPhase = tmp;
+          const responseNotification = phaseUpdateNotification(this);
+          this.users.forEach((user) => {
             user.socket.write(
               createResponse(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, 0, responseNotification),
             );
           });
-          userUpdateNotification(currentGame.users);
-          currentGame.changePhase();
+          userUpdateNotification(this.users);
+          this.changePhase();
         } catch (err) {
           console.error(err);
         }
