@@ -281,20 +281,8 @@ class User {
     return bbangCard ? true : false;
   }
 
-  // 이거 안쓰지 않나
-  userStateTimeout(state) {
-    //nextStateAt
-    const { inGameUsers, currentState, nextState, nextStateAt, targetUserId, time } = state;
-    setTimeout(() => {
-      this.characterData.stateInfo.state = currentState;
-      this.characterData.stateInfo.nextState = nextState;
-      this.characterData.stateInfo.nextStateAt = Date.now() + nextStateAt;
-      this.characterData.stateInfo.stateTargetUserId = targetUserId;
-      const userUpdateResponse = userUpdateNotification(inGameUsers); //updateUserData
-      this.socket.write(
-        createResponse(PACKET_TYPE.USER_UPDATE_NOTIFICATION, 0, userUpdateResponse),
-      );
-    }, time); // time초 뒤에 callback 실행
+  getHandCardsCount() {
+    return this.characterData.handCardsCount;
   }
 
   increaseBbangCount() {
