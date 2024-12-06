@@ -40,7 +40,7 @@ const deathMatchBbangHandler = (cardUsingUser, targetUser, currentGame) => {
     targetUser,
     stateNormal: getStateNormal(),
     userUpdateNotification,
-    currentGameUsers: currentGame.users,
+    currentGameUsers: currentGame.getAliveUsers(),
   });
 
   // 시전자 state 변경(빵야 카드 사용 시: 현피 기다림)

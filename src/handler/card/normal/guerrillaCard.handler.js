@@ -6,8 +6,9 @@ import {
 import userUpdateNotification from '../../../utils/notification/userUpdate.notification.js';
 
 export const guerrillaCardHandler = (cardUsingUser, targetUser, currentGame, useCardType) => {
-  currentGame.users.forEach((user) => {
-    if (cardUsingUser.id !== user.id && 0 < user.characterData.hp) {
+  const aliveUsers = currentGame.getAliveUsers();
+  aliveUsers.forEach((user) => {
+    if (cardUsingUser.id !== user.id) {
       cardUsingUser.setCharacterState(getStateGuerrillaShooter(user.id));
       user.setCharacterState(getStateGuerrillaTarget(cardUsingUser.id));
       currentGame.events.scheduleEvent(user.id, 'finishBbangWaitOnGuerrilla', 5000, {

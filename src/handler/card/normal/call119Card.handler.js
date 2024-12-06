@@ -5,11 +5,11 @@ export const call119CardHandler = (cardUsingUser, targetUser, currentGame, useCa
     return;
   }
 
+  const aliveUsers = currentGame.getAliveUsers()
   // 타겟이 나빼고 모두 일 때
-  currentGame.users.forEach((user) => {
+  aliveUsers.forEach((user) => {
     if (
       cardUsingUser.id !== user.id &&
-      0 < user.characterData.hp &&
       user.characterData.hp < user.maxHp
     ) {
       user.increaseHp();
