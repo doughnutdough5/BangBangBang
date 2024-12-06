@@ -3,10 +3,14 @@ import userUpdateNotification from './userUpdate.notification.js';
 
 export const deadCheck = (game) => {
   try {
-    const deathUser = game.users.find((user) => user.characterData.hp === 0);
-    if (deathUser && deathUser.characterData.alive) {
-      deathUser.characterData.alive = false;
-      characterTypeGetCard(game, deathUser);
+    const deathUsers = game.users.filter((user) => user.characterData.hp === 0);
+    if (deathUsers) {
+      for (let i = 0; i < deathUsers.length; i++) {
+        if (deathUsers[i].characterData.alive) {
+          deathUsers[i].characterData.alive = false;
+          characterTypeGetCard(game, deathUsers[i]);
+        }
+      }
     }
   } catch (e) {
     console.error(e);
@@ -39,6 +43,5 @@ const characterTypeGetCard = (game, deathUser) => {
       maskUser.addHandCard(deathUserHandCards[i].type);
     }
   }
-
   userUpdateNotification(game.users);
 };
