@@ -48,6 +48,7 @@ class Game {
 
   returnCardToDeck(cardType) {
     this.deck.push(cardType);
+    console.log(this.deck);
   }
 
   changePhase() {
