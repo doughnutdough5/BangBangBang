@@ -76,6 +76,7 @@ export const gameEndNotification = async (room) => {
 
       roomManager.deleteRoom(room.id);
       room.users.forEach((user) => {
+        user.releaseUser()
         user.socket.write(createResponse(PACKET_TYPE.GAME_END_NOTIFICATION, 0, responsePayload));
       });
 

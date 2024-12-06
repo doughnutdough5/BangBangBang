@@ -28,6 +28,15 @@ class User {
   //   return this.characterData.stateInfo.stateTargetUserId;
   // }
 
+  releaseUser() {
+    this.characterData = new CharacterData();
+    this.position = new Position();
+    this.roomId = null;
+    this.maxHp = null;
+    this.maxBbangCount = 0;
+    this.damage = 1;
+  }
+
   isAlive() {
     return this.characterData.alive;
   }
