@@ -45,9 +45,11 @@ export const useCardHandler = (socket, payload) => {
       return;
     }
 
-    // 공통 로직
+    // 일반카드1~12 무조건 덱으로,총 13~16, 장비 17~20, 디버프 21~23 - 사라질 때 덱으로
     cardUsingUser.removeHandCard(useCardType); // 카드 사용자의 손에 들고 있던 카드 제거
-    currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
+    if (useCardType < 13) {
+      currentGame.returnCardToDeck(useCardType); // 카드 덱으로 복귀
+    }
 
     const useCardNotificationResponse = useCardNotification(
       useCardType,
