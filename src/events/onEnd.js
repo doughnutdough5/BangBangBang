@@ -7,10 +7,17 @@ export const onEnd = (socket) => () => {
   try {
     console.log(`Client disconnected from ${socket.remoteAddress}:${socket.remotePort}`);
     const user = getUserBySocket(socket);
-    const currentGame = findGameById(user.roomId);
+
     if (!user){
       return;
     }
+
+    if (!user.roomId) {
+      removeUser(socket);
+      return;
+    }
+
+    const currentGame = findGameById(user.roomId);
     if (!currentGame) {
       removeUser(socket);
       return;
