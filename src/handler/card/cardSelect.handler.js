@@ -43,7 +43,9 @@ export const cardSelectHandler = (socket, payload) => {
 
   if (usedCardType === Packets.CardType.ABSORB) {
     cardSelectUser.addHandCard(absorbedCard);
-  }
+  } else {
+    currentGame.returnCardToDeck(absorbedCard);
+  };
 
   cardSelectUser.setCharacterState(getStateNormal());
   targetUser.setCharacterState(getStateNormal());
