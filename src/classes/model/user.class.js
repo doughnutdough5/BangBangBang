@@ -1,7 +1,4 @@
-import { PACKET_TYPE } from '../../constants/header.js';
 import { Packets } from '../../init/loadProtos.js';
-import userUpdateNotification from '../../utils/notification/userUpdate.notification.js';
-import { createResponse } from '../../utils/response/createResponse.js';
 import CharacterData from './characterData.class.js';
 import Position from './position.class.js';
 
