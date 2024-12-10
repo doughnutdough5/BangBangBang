@@ -1,6 +1,5 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { findGameById, removeGameSession } from '../../sessions/game.session.js';
-import { getUserBySocket } from '../../sessions/user.session.js';
 import leaveRoomNotification from '../../utils/notification/leaveRoom.nofitication.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { Packets } from '../../init/loadProtos.js';
@@ -8,7 +7,7 @@ import { roomManager } from '../../classes/manager/room.manager.js';
 
 export const leaveRoomHandler = async (socket, payload) => {
   try {
-    const leaveUser = getUserBySocket(socket);
+    const leaveUser = getUser(socket.jwt);
     const currentGameId = leaveUser.roomId;
     const currentGame = findGameById(leaveUser.roomId);
 

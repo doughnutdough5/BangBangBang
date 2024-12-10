@@ -1,5 +1,5 @@
 import { findGameById, getAllGameSessions, joinGameSession } from '../../sessions/game.session.js';
-import { getUserBySocket } from '../../sessions/user.session.js';
+import { getUser } from '../../sessions/user.session.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { joinRoomNotification } from '../../utils/notification/joinRoom.notification.js';
@@ -8,7 +8,7 @@ import { Packets } from '../../init/loadProtos.js';
 export const joinRoomHandler = (socket, payload) => {
   const { roomId } = payload.joinRoomRequest;
 
-  const joinUser = getUserBySocket(socket);
+  const joinUser = getUser(socket.jwt);
   if (!joinUser) {
     const errorResponsePayload = {
       joinRoomResponse: {
@@ -71,7 +71,7 @@ export const joinRoomHandler = (socket, payload) => {
 };
 
 export const joinRandomRoomHandler = (socket, payload) => {
-  const joinUser = getUserBySocket(socket);
+  const joinUser = getUser(socket.jwt);
   if (!joinUser) {
     const errorResponsePayload = {
       joinRandomRoomResponse: {

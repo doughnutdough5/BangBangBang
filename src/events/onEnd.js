@@ -1,25 +1,25 @@
 import { leaveRoomHandler } from '../handler/room/leaveRoom.handler.js';
 import { Packets } from '../init/loadProtos.js';
 import { findGameById } from '../sessions/game.session.js';
-import { getUserBySocket, removeUser } from '../sessions/user.session.js';
+import { getUser, removeUser } from '../sessions/user.session.js';
 
 export const onEnd = (socket) => () => {
   try {
     console.log(`Client disconnected from ${socket.remoteAddress}:${socket.remotePort}`);
-    const user = getUserBySocket(socket);
+    const user = getUser(socket.jwt);
 
     if (!user){
       return;
     }
 
     if (!user.roomId) {
-      removeUser(socket);
+      removeUser(socket.jwt);
       return;
     }
 
     const currentGame = findGameById(user.roomId);
     if (!currentGame) {
-      removeUser(socket);
+      removeUser(socket.jwt);
       return;
     }
 
@@ -31,7 +31,7 @@ export const onEnd = (socket) => () => {
       //게임 세팅 중
       setTimeout(() => {
         user.setHp(0);
-        removeUser(socket);
+        removeUser(socket.jwt);
       }, 5000);
       return;
     }
@@ -40,9 +40,9 @@ export const onEnd = (socket) => () => {
       user.setHp(0);
     }
 
-    removeUser(socket);
+    removeUser(socket.jwt);
   } catch (e) {
-    removeUser(socket);
+    removeUser(socket.jwt);
     console.error(e);
   }
 };

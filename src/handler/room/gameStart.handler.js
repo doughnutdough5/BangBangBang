@@ -2,13 +2,13 @@ import { PACKET_TYPE } from '../../constants/header.js';
 import { characterPositions } from '../../init/loadPositions.js';
 import { Packets } from '../../init/loadProtos.js';
 import { findGameById } from '../../sessions/game.session.js';
-import { getUserBySocket } from '../../sessions/user.session.js';
+import { getUser } from '../../sessions/user.session.js';
 import { gameStartNotification } from '../../utils/notification/gameStart.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 
 export const gameStartHandler = (socket, payload) => {
   // 현재 방, 해당 방의 유저들 정보
-  const ownerUser = getUserBySocket(socket);
+  const ownerUser = getUser(socket.jwt);
   const currentGame = findGameById(ownerUser.roomId);
   const inGameUsers = currentGame.users;
 

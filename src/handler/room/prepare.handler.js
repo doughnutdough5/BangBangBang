@@ -2,15 +2,14 @@ import { cardDeck } from '../../constants/cardDeck.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { Packets } from '../../init/loadProtos.js';
 import { findGameById } from '../../sessions/game.session.js';
-import { getUserBySocket } from '../../sessions/user.session.js';
+import { getUser } from '../../sessions/user.session.js';
 import { gamePrepareNotification } from '../../utils/notification/gamePrepare.notification.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { shuffle, shuffledCharacter, shuffledRoleType } from '../../utils/shuffle.js';
 
 export const gamePrepareHandler = (socket, payload) => {
   try {
-    const ownerUser = getUserBySocket(socket);
-
+    const ownerUser = getUser(socket.jwt);
     // 방장 존재 여부
     if (!ownerUser) {
       const errorResponse = {

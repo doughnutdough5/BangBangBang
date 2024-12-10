@@ -1,6 +1,6 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { addGameSession, joinGameSession } from '../../sessions/game.session.js';
-import { getUserBySocket } from '../../sessions/user.session.js';
+import { getUser } from '../../sessions/user.session.js';
 import CustomError from '../../utils/error/customError.js';
 import { createResponse } from '../../utils/response/createResponse.js';
 import { Packets } from '../../init/loadProtos.js';
@@ -8,7 +8,7 @@ import { roomManager } from '../../classes/manager/room.manager.js';
 
 export const createRoomHandler = async (socket, payload) => {
   const { name, maxUserNum } = payload.createRoomRequest;
-  const user = getUserBySocket(socket);
+  const user = getUser(socket.jwt);
   if (!user) {
     throw new CustomError(`유저를 찾을 수 없음`);
   }
