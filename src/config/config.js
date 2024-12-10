@@ -13,6 +13,10 @@ import {
   HOST,
   JWT_SECRET_KEY,
   PORT,
+  REDIS_HOST,
+  REDIS_NAME,
+  REDIS_PASSWORD,
+  REDIS_PORT
 } from '../constants/env.js';
 import {
   PAYLOAD_LENGTH_SIZE,
@@ -54,4 +58,10 @@ export const config = {
   jwt: {
     SCRET_KEY: JWT_SECRET_KEY,
   },
+  redis: {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+    name: REDIS_NAME,
+    password: REDIS_PASSWORD,
+  }
 };
